@@ -34,6 +34,7 @@ class Inventory {
   removeItem() {
     if (this.currentItemSquare != null) {
       this.currentItemSquare.removeItem();
+      this.currentItem = null;
     }
   }
 
@@ -57,9 +58,8 @@ class Inventory {
     this.currentItemSquare = this.items[key];
     this.currentItemSquare.color = "yellow";
 
-    if (this.currentItemSquare.hasItem()) {
-      this.currentItem = this.currentItemSquare.item;
-    }
+    this.currentItem = this.currentItemSquare.item;
+
     console.log(this.currentItemSquare);
   }
 }
