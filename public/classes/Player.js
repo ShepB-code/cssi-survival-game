@@ -4,13 +4,21 @@ class Player {
     this.xSpeed = 3;
     this.ySpeed = 3;
     this.inventory;
-    this.playerItem = null;
+    this.playerItem;
+    // this.playerItem = new Item(
+    //this.sprite.position.x,
+    //this.sprite.position.y,
+    //"player"
+    //);
   }
 
   showSelf() {
     drawSprite(this.sprite);
     if (this.inventory.currentItem != null) {
-      this.inventory.currentItem.showSelf();
+      this.playerItem = this.inventory.currentItem;
+      this.playerItem.sprite.position.x = this.sprite.position.x;
+      this.playerItem.sprite.position.y = this.sprite.position.y - 20;
+      this.playerItem.showSelf();
     }
   }
   moveSelf(xIncrement, yIncrement) {
@@ -37,8 +45,16 @@ class Player {
       //key = d
       xIncrement += this.xSpeed;
     }
-    this.moveSelf(xIncrement, yIncrement);
+    //this.moveSelf(xIncrement, yIncrement);
 
     return [xIncrement, yIncrement];
+  }
+
+  handleKeyPress(key) {
+    if (key == "q") {
+      this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
+      this.playerItem.sprite.position.y = this.sprite.position.y - 20;
+      this.inventory.removeItem();
+    }
   }
 }

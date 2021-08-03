@@ -21,7 +21,7 @@ function setup() {
   player = new Player();
   inventory = new Inventory(0, height - 20, player);
   player.inventory = inventory;
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 100; i++) {
     itemArray.push(new Item(random(MAP_W), random(MAP_H), i));
   }
 }
@@ -35,16 +35,17 @@ function draw() {
   player.showSelf();
 
   let [xOffset, yOffset] = player.handleMovement();
-  currentCanvasX = player.sprite.position.x + -width / 2;
-  currentCanvasY = player.sprite.position.y + -height / 2;
-
-  rect(currentCanvasX + -xOffset, currentCanvasY + -yOffset, 10, 10);
+  currentCanvasX = player.sprite.position.x - width / 2;
+  currentCanvasY = player.sprite.position.y - height / 2;
+  rect(currentCanvasX - xOffset, currentCanvasY - yOffset, 10, 10);
 
   inventory.updatePosition(
-    currentCanvasX,
-    currentCanvasY + height - inventory.squareSize
+    currentCanvasX - xOffset,
+    currentCanvasY + height - inventory.squareSize - yOffset
   );
   inventory.showSelf();
+
+  player.moveSelf(xOffset, yOffset);
 
   //player.showInventory();
   for (let i = 0; i < itemArray.length; i++) {
@@ -65,7 +66,7 @@ function keyPressed() {
   console.log(keyCode);
   if (keyCode == 81) {
     //q
-    inventory.removeItem();
+    player.handleKeyPress(key);
   }
   if (keyCode >= 49 && keyCode <= 57) {
     inventory.handleKeyPress(key); //value from 1-9
