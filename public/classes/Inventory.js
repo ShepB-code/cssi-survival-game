@@ -1,11 +1,11 @@
 class Inventory {
-  constructor(x, y, player) {
+  constructor(x, y) {
     this.squareSize = 30;
     this.items = {};
     for (let i = 1; i < 10; i++) {
       this.items[i] = new InventorySquare(
         x + this.squareSize * (i - 1),
-        y,
+        height + 150,
         this.squareSize
       );
 
