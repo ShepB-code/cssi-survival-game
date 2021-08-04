@@ -1,8 +1,8 @@
 class HealthBar {
-  constructor(x, y) {
+  constructor(x, y, health) {
     this.x = x;
     this.y = y;
-    this.health = 50;
+    this.health = health;
   }
 
   showSelf() {

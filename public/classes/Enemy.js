@@ -34,6 +34,8 @@ class Enemy {
         player.sprite.position.x,
         player.sprite.position.y
       );
+    } else {
+      player.health--;
     }
   }
 }
