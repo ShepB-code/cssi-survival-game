@@ -124,11 +124,7 @@ function draw() {
     //only move background when we're moving
     moveBackgrounds(xOffset);
   }
-  push();
-  fill("orange");
-  rect(camera.position.x, height, 20, 20);
-  rect(camera.position.x, camera.position.y, 30, 30);
-  pop();
+  
   //show enemies
   drawEnemies();
 
