@@ -38,10 +38,9 @@ class Inventory {
     }
   }
 
-  updatePosition(canvasX, canvasY) {
+  updatePosition(canvasX) {
     for (let i = 1; i < 10; i++) {
       this.items[i].x = canvasX + this.squareSize * (i - 1);
-      this.items[i].y = canvasY;
       if (this.items[i].hasItem()) {
         this.items[i].item.sprite.position.x =
           this.items[i].x + this.items[i].squareSize / 2;
