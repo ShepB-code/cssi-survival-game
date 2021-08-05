@@ -146,10 +146,11 @@ function draw() {
     crafting.showSelf();
   }
   player.showSelf();
+  player.handleDeath();
 
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
-  health.showSelf();
+  health.showSelf(player);
 
   //draw items
   drawItems();
