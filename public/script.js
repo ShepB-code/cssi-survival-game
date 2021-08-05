@@ -48,6 +48,7 @@ function preload() {
 function setup() {
   canvas = createCanvas(927, 590);
   colorMode(HSB, 360, 100, 100);
+
   player = new Player();
   inventory = new Inventory(0, height);
   health = new HealthBar(0, 225, player.health);
@@ -97,11 +98,6 @@ function draw() {
   currentCanvasX = player.sprite.position.x - width / 2;
   currentCanvasY = 0;
 
-  if (mouseIsPressed) {
-    camera.zoom = 1.5;
-  } else {
-    camera.zoom = 1;
-  }
   //updating our camera x position with the x coordinate of our player (height remains the same)
   camera.position.x = player.sprite.position.x;
 
@@ -109,17 +105,8 @@ function draw() {
   player.handlePosition(); //handles the y position with jumping
   let [xOffset, yOffset] = player.handleMovement();
 
-  if (xOffset > 0) {
-    player.sprite.changeAnimation("run");
-  } else if (xOffset < 0) {
-    player.sprite.changeAnimation("runLeft");
-  } else {
-    player.sprite.changeAnimation("idle");
-  }
+  player.chooseAnimation(xOffset);
 
-  if (player.jumping || player.falling) {
-    player.sprite.changeAnimation("jump");
-  }
   player.moveSelf(xOffset, yOffset);
 
   camera.off();
@@ -152,14 +139,9 @@ function draw() {
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
   health.showSelf();
-  for (let i = 0; i < itemArray.length; i++) {
-    if (
-      itemArray[i].sprite.position.x > currentCanvasX &&
-      itemArray[i].sprite.position.x < currentCanvasX + width
-    ) {
-      itemArray[i].showSelf();
-    }
-  }
+
+  //draw items
+  drawItems();
 }
 
 function drawBackgrounds() {
@@ -176,14 +158,24 @@ function drawEnemies() {
     ) {
       enemy.showSelf();
       enemy.handleMovement(player);
-      // console.log(player.health);
+    }
+  });
+}
+
+function drawItems() {
+  itemArray.forEach((item) => {
+    if (
+      item.sprite.position.x > currentCanvasX &&
+      item.sprite.position.x < currentCanvasX + width
+    ) {
+      item.showSelf();
     }
   });
 }
 
 function moveBackgrounds(xOffset) {
   layersArray.forEach((layer) => {
-    layer.moveSelf(xOffset > 0, currentCanvasX);
+    layer.moveSelf(xOffset > 0, currentCanvasX); //moveSelf(directionBoolean, currentXposition)
   });
 }
 
