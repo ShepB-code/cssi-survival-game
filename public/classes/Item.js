@@ -70,8 +70,8 @@ class Lettuce extends Item {
 }
 
 class Bow extends Item {
-  constructor(x, y) {
-    super(x, y, 10, 10, "bow");
+  constructor(x) {
+    super(x, "bow");
     this.radius = 5;
     this.sprite.setCollider("circle", 0, 0, this.radius);
   }
@@ -82,8 +82,8 @@ class Bow extends Item {
 }
 
 class Sword extends Item {
-  constructor(x, y) {
-    super(x, y, 10, 10, "sword");
+  constructor(x) {
+    super(x, "sword");
     this.width = 10;
     this.height = 10;
     this.sprite.setCollider("rectangle", 0, 0, this.width, this.height);

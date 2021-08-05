@@ -5,12 +5,13 @@ class Player {
     this.ySpeed = 3;
     this.jumping = false;
     this.falling = false;
-    this.maxJumpY = this.sprite.position.y - 60;
+    this.maxJumpY = this.sprite.position.y - 40;
     this.groundY = this.sprite.position.y;
     this.direction = "right";
     this.inventory; //initialized in the setup function
     this.health = 100;
     this.playerItem;
+    this.craftingIsOpen = false;
 
     this.sprite.addAnimation(
       "idleRight",
@@ -86,7 +87,7 @@ class Player {
   }
 
   handleDeath() {
-    if(this.health <= 0) {
+    if (this.health <= 0) {
       this.health = 0;
       noLoop();
     }
