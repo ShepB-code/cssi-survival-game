@@ -42,9 +42,9 @@ class Inventory {
           this.itemsInInventory.splice(i, 1);
         }
       }
-      console.log(this.itemsInInventory);
       this.currentItemSquare.removeItem();
       this.currentItem = null;
+      console.log(this.itemsInInventory);
     }
   }
 

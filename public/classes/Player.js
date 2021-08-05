@@ -1,6 +1,6 @@
 class Player {
   constructor() {
-    this.sprite = createSprite(width / 2, height + 120, 50, 50);
+    this.sprite = createSprite(0, height + 120, 50, 50);
     this.xSpeed = 1.5;
     this.ySpeed = 3;
     this.jumping = false;
@@ -85,6 +85,13 @@ class Player {
     }
   }
 
+  handleDeath() {
+    if(this.health <= 0) {
+      this.health = 0;
+      noLoop();
+    }
+  }
+
   showCrafting() {
     drawSprite(this.craftingSprite);
   }
@@ -136,7 +143,7 @@ class Player {
   handleKeyPress(key) {
     if (key == "q") {
       this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
-      this.playerItem.sprite.position.y = this.sprite.position.y - 20;
+      this.playerItem.sprite.position.y = this.sprite.position.y;
       this.inventory.removeItem();
     } else if (key == " ") {
       if (!this.jumping && !this.falling) {
@@ -155,31 +162,31 @@ class Player {
   }
   chooseAnimation(xOffset) {
     if (xOffset > 0) {
-      player.sprite.changeAnimation("runRight");
+      this.sprite.changeAnimation("runRight");
       this.direction = "right";
     } else if (xOffset < 0) {
-      player.sprite.changeAnimation("runLeft");
+      this.sprite.changeAnimation("runLeft");
       this.direction = "left";
     } else {
       if (this.direction == "right") {
-        player.sprite.changeAnimation("idleRight");
+        this.sprite.changeAnimation("idleRight");
       } else {
-        player.sprite.changeAnimation("idleLeft");
+        this.sprite.changeAnimation("idleLeft");
       }
     }
 
-    if (player.jumping) {
+    if (this.jumping) {
       if (this.direction == "right") {
-        player.sprite.changeAnimation("jumpRight");
+        this.sprite.changeAnimation("jumpRight");
       } else {
-        player.sprite.changeAnimation("jumpLeft");
+        this.sprite.changeAnimation("jumpLeft");
       }
     }
-    if (player.falling) {
+    if (this.falling) {
       if (this.direction == "right") {
-        player.sprite.changeAnimation("fallRight");
+        this.sprite.changeAnimation("fallRight");
       } else {
-        player.sprite.changeAnimation("fallLeft");
+        this.sprite.changeAnimation("fallLeft");
       }
     }
   }
