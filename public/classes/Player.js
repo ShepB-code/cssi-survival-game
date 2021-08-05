@@ -1,6 +1,7 @@
 class Player {
   constructor() {
-    this.sprite = createSprite(0, height + 120, 50, 50);
+    this.sprite = createSprite(random(0, 50), height + 120, 50, 50);
+
     this.xSpeed = 1.5;
     this.ySpeed = 3;
     this.jumping = false;
@@ -11,6 +12,7 @@ class Player {
     this.inventory; //initialized in the setup function
     this.health = 100;
     this.playerItem;
+
     this.craftingIsOpen = false;
 
     this.sprite.addAnimation(
@@ -143,9 +145,12 @@ class Player {
   }
   handleKeyPress(key) {
     if (key == "q") {
-      this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
-      this.playerItem.sprite.position.y = this.sprite.position.y;
-      this.inventory.removeItem();
+      if (this.inventory.currentItem != null) {
+        this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
+        this.playerItem.sprite.position.y = this.sprite.position.y;
+        this.inventory.removeItem();
+      }
+
     } else if (key == " ") {
       if (!this.jumping && !this.falling) {
         //to not allow double jumping

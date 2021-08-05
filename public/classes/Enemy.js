@@ -12,6 +12,9 @@ class Enemy {
     this.speed = 0.5;
     this.attacking = false;
 
+    this.xSpeed = 2.75;
+
+
     this.sprite.addAnimation(
       "idle",
       "../assets/enemy/idle/idle.png",
@@ -222,6 +225,18 @@ class Enemy {
       this.damagePlayer(player);
     }
   }
+
+  reverseMap() {
+    if (keyIsDown(65)) {
+      //key = a
+      this.sprite.position.x += this.xSpeed;
+    }
+    if (keyIsDown(68)) {
+      //key = d
+      this.sprite.position.x += -this.xSpeed;
+    }
+  }
+
   
   damagePlayer(player) {
     if(player.health > 0) {

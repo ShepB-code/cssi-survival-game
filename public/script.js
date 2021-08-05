@@ -11,6 +11,7 @@ let currentCanvasX;
 let currentCanvasY;
 let canvas;
 let player;
+// let player2;
 let itemArray = [];
 let enemyArray = [];
 let inventory;
@@ -49,6 +50,7 @@ function preload() {
 function setup() {
   canvas = createCanvas(927, 590);
   colorMode(HSB, 360, 100, 100);
+  frameRate = 144;
 
   player = new Player();
   inventory = new Inventory(0, height);
@@ -57,12 +59,22 @@ function setup() {
   player.inventory = inventory;
 
   for (let i = 0; i < 10; i++) {
-    itemArray.push(new Rock(random(MAP_W)));
+    itemArray.push(new Thread(random(MAP_W)));
+
   }
 
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Wood(random(MAP_W)));
   }
+
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Beef(random(MAP_W)));
+  }
+
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Lettuce(random(MAP_W)));
+  }
+]
 
   // Initializing enemies
   for (let i = 0; i < 5; i++) {
@@ -113,10 +125,17 @@ function draw() {
 
   player.chooseAnimation(xOffset);
 
+
   //update player, crafting, and inventory positions
   player.moveSelf(xOffset, yOffset);
   crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
+
+  //update crafting inventory stats
+  crafting.updateInventoryStats(inventory);
+
+  crafting.getValidRecipes();
+  camera.off();
 
   //update crafting inventory stats
   crafting.updateInventoryStats(inventory);
@@ -134,6 +153,7 @@ function draw() {
     moveBackgrounds(xOffset);
   }
 
+
   //show enemies
   drawEnemies();
 
@@ -147,6 +167,7 @@ function draw() {
   }
   player.showSelf();
   player.handleDeath();
+
 
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
@@ -163,6 +184,7 @@ function drawBackgrounds() {
 }
 function drawEnemies() {
   enemyArray.forEach((enemy) => {
+    enemy.reverseMap();
     // Rendering enemies and moving if enemy in player view
     if (
       enemy.sprite.position.x > currentCanvasX &&
@@ -185,6 +207,19 @@ function drawItems() {
   });
 }
 
+function drawItems() {
+  itemArray.forEach((item) => {
+    item.handleMovement();
+    if (
+      item.sprite.position.x > currentCanvasX &&
+      item.sprite.position.x < currentCanvasX + width
+    ) {
+      
+      item.showSelf();
+    }
+  });
+}
+
 function moveBackgrounds(xOffset) {
   layersArray.forEach((layer) => {
     layer.moveSelf(xOffset > 0, currentCanvasX); //moveSelf(directionBoolean, currentXposition)
@@ -193,11 +228,12 @@ function moveBackgrounds(xOffset) {
 
 function keyPressed() {
   console.log(keyCode);
-
+  
   if (keyCode == 32) {
     //space
     player.handleKeyPress(key);
   }
+
   if (keyCode == 37 || keyCode == 39) {
     //left or right arrow
     crafting.cycleRecipes(key);
@@ -207,6 +243,7 @@ function keyPressed() {
     player.handleKeyPress(key);
 
     crafting.cycleRecipes("beginning");
+
   }
   if (keyCode == 81) {
     //q
@@ -229,6 +266,10 @@ function keyPressed() {
   }
 }
 
+// function movePlayer2(data) {
+//   player2 = new Player2(data.x, data.y)
+// }
+
 // function itemPlayerCollision(item) {
 //   if (
 //     collideRectRect(
@@ -248,4 +289,4 @@ function keyPressed() {
 
 //player.showInventory();
 
-//itemPlayerCollision();
+

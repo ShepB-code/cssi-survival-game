@@ -1,4 +1,5 @@
 class Crafting {
+  
   constructor() {
     this.sprite = createSprite(width / 2, height, 150, 150);
     this.leftArrowSprite = createSprite(this.sprite.position.x, height, 20, 20);
@@ -146,3 +147,5 @@ class Crafting {
     }
   }
 }
+
+
