@@ -253,6 +253,7 @@ function keyPressed() {
   if (keyCode == 69) {
     if (player.craftingIsOpen) {
       crafting.purchaseItem(inventory, itemArray);
+      player.craftingIsOpen = false;
     } else {
       for (var item of itemArray) {
         if (player.itemPlayerCollision(item)) {
