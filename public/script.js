@@ -168,8 +168,8 @@ function drawEnemies() {
       enemy.sprite.position.x > currentCanvasX &&
       enemy.sprite.position.x < currentCanvasX + width
     ) {
-      enemy.showSelf();
-      enemy.handleMovement(player);
+      //enemy.showSelf();
+      //enemy.handleMovement(player);
     }
   });
 }
@@ -193,14 +193,20 @@ function moveBackgrounds(xOffset) {
 
 function keyPressed() {
   console.log(keyCode);
+
   if (keyCode == 32) {
     //space
     player.handleKeyPress(key);
   }
-
+  if (keyCode == 37 || keyCode == 39) {
+    //left or right arrow
+    crafting.cycleRecipes(key);
+  }
   if (keyCode == 73) {
     //i
     player.handleKeyPress(key);
+
+    crafting.cycleRecipes("beginning");
   }
   if (keyCode == 81) {
     //q
@@ -210,12 +216,16 @@ function keyPressed() {
     inventory.handleKeyPress(key); //value from 1-9
   }
   if (keyCode == 69) {
-    //key = e
-    for (var item of itemArray) {
-      if (player.itemPlayerCollision(item)) {
-        inventory.addItem(item);
+    if (player.craftingIsOpen) {
+      crafting.purchaseItem(inventory, itemArray);
+    } else {
+      for (var item of itemArray) {
+        if (player.itemPlayerCollision(item)) {
+          inventory.addItem(item);
+        }
       }
     }
+    //key = e
   }
 }
 
