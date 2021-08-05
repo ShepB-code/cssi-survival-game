@@ -11,7 +11,6 @@ let currentCanvasX;
 let currentCanvasY;
 let canvas;
 let player;
-// let player2;
 let itemArray = [];
 let enemyArray = [];
 let inventory;
@@ -74,7 +73,6 @@ function setup() {
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Lettuce(random(MAP_W)));
   }
-]
 
   // Initializing enemies
   for (let i = 0; i < 5; i++) {
@@ -190,8 +188,8 @@ function drawEnemies() {
       enemy.sprite.position.x > currentCanvasX &&
       enemy.sprite.position.x < currentCanvasX + width
     ) {
-      //enemy.showSelf();
-      //enemy.handleMovement(player);
+      enemy.showSelf();
+      enemy.handleMovement(player);
     }
   });
 }
@@ -263,6 +261,30 @@ function keyPressed() {
       }
     }
     //key = e
+  }
+}
+
+function mouseClicked() {
+  if (inventory.currentItem != null) {
+    let index;
+    for (let i = 0; i < itemArray.length; i++) {
+        if (itemArray[i] == inventory.currentItem) {
+          index = i;
+          break;
+        }
+      }
+    if (inventory.currentItem.name == "beef") {
+      player.health += 20;
+      inventory.removeItem();
+      itemArray.splice(index, 1);
+    }
+    if (inventory.currentItem.name == "lettuce") {
+      player.health += 20;
+      inventory.removeItem();
+      itemArray.splice(index, 1);
+    }
+  } else {
+    
   }
 }
 
