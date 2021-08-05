@@ -17,8 +17,6 @@ let enemyArray = [];
 let inventory;
 let health;
 let crafting;
-// let socket;
-
 
 let layersArray;
 
@@ -54,8 +52,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100);
   frameRate = 144;
 
-  // socket = io.connect("http://localhost:3000/")
-  // socket.on("player2", movePlayer2);
   player = new Player();
   inventory = new Inventory(0, height);
   crafting = new Crafting();
@@ -64,6 +60,7 @@ function setup() {
 
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Thread(random(MAP_W)));
+
   }
 
   for (let i = 0; i < 10; i++) {
@@ -77,6 +74,7 @@ function setup() {
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Lettuce(random(MAP_W)));
   }
+]
 
   // Initializing enemies
   for (let i = 0; i < 5; i++) {
@@ -127,16 +125,17 @@ function draw() {
 
   player.chooseAnimation(xOffset);
 
-  // player2.handlePosition(); //handles the y position with jumping
-  // let [xOffset, yOffset] = player2.handleMovement();
-
-  // player2.chooseAnimation(xOffset);
 
   //update player, crafting, and inventory positions
   player.moveSelf(xOffset, yOffset);
-  // player2.moveSelf(xOffset, yOffset);
   crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
+
+  //update crafting inventory stats
+  crafting.updateInventoryStats(inventory);
+
+  crafting.getValidRecipes();
+  camera.off();
 
   //update crafting inventory stats
   crafting.updateInventoryStats(inventory);
@@ -153,10 +152,8 @@ function draw() {
     //only move background when we're moving
     moveBackgrounds(xOffset);
   }
-  // let data = {
-  //   "x": player.sprite.position.x,
-  //   "y": player.sprite.position.y,
-  // }
+
+
   //show enemies
   drawEnemies();
 
@@ -170,8 +167,7 @@ function draw() {
   }
   player.showSelf();
   player.handleDeath();
-  // player2.showSelf();
-  // player2.handleDeath();
+
 
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
@@ -194,8 +190,19 @@ function drawEnemies() {
       enemy.sprite.position.x > currentCanvasX &&
       enemy.sprite.position.x < currentCanvasX + width
     ) {
-      enemy.showSelf();
-      enemy.handleMovement(player);
+      //enemy.showSelf();
+      //enemy.handleMovement(player);
+    }
+  });
+}
+
+function drawItems() {
+  itemArray.forEach((item) => {
+    if (
+      item.sprite.position.x > currentCanvasX &&
+      item.sprite.position.x < currentCanvasX + width
+    ) {
+      item.showSelf();
     }
   });
 }
@@ -221,14 +228,22 @@ function moveBackgrounds(xOffset) {
 
 function keyPressed() {
   console.log(keyCode);
+  
   if (keyCode == 32) {
     //space
     player.handleKeyPress(key);
   }
 
+  if (keyCode == 37 || keyCode == 39) {
+    //left or right arrow
+    crafting.cycleRecipes(key);
+  }
   if (keyCode == 73) {
     //i
     player.handleKeyPress(key);
+
+    crafting.cycleRecipes("beginning");
+
   }
   if (keyCode == 81) {
     //q
@@ -238,12 +253,16 @@ function keyPressed() {
     inventory.handleKeyPress(key); //value from 1-9
   }
   if (keyCode == 69) {
-    //key = e
-    for (var item of itemArray) {
-      if (player.itemPlayerCollision(item)) {
-        inventory.addItem(item);
+    if (player.craftingIsOpen) {
+      crafting.purchaseItem(inventory, itemArray);
+    } else {
+      for (var item of itemArray) {
+        if (player.itemPlayerCollision(item)) {
+          inventory.addItem(item);
+        }
       }
     }
+    //key = e
   }
 }
 
@@ -270,4 +289,4 @@ function keyPressed() {
 
 //player.showInventory();
 
-//itemPlayerCollision();
+

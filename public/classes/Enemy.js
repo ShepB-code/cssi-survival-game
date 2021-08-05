@@ -11,7 +11,9 @@ class Enemy {
     this.x = x;
     this.speed = 0.5;
     this.attacking = false;
+
     this.xSpeed = 2.75;
+
 
     this.sprite.addAnimation(
       "idle",
@@ -234,6 +236,7 @@ class Enemy {
       this.sprite.position.x += -this.xSpeed;
     }
   }
+
   
   damagePlayer(player) {
     if(player.health > 0) {

@@ -107,7 +107,7 @@ class Lettuce extends Item {
 }
 
 class Bow extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "bow");
     this.radius = 5;
     this.sprite.shapeColor = color(50)
@@ -120,7 +120,7 @@ class Bow extends Item {
 }
 
 class Sword extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "sword");
     this.width = 10;
     this.height = 10;
