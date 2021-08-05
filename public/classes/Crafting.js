@@ -1,5 +1,4 @@
 class Crafting {
-  
   constructor() {
     this.sprite = createSprite(width / 2, height, 150, 150);
     this.leftArrowSprite = createSprite(this.sprite.position.x, height, 20, 20);
@@ -24,7 +23,7 @@ class Crafting {
         name: "bow",
         ingredients: {
           wood: 2,
-          string: 1,
+          thread: 1,
         },
       },
     };
@@ -74,6 +73,7 @@ class Crafting {
     console.log(this.validRecipes);
   }
   purchaseItem(inventory, allItems) {
+    this.validRecipes.splice(this.index, 1);
     //remove items from the inventory
     for (const key in inventory.items) {
       for (const itemType in this.currentRecipe["ingredients"]) {
@@ -101,11 +101,14 @@ class Crafting {
     }
   }
   getValidRecipes() {
+    //this.validRecipes = []; //resetting
     for (const key in this.recipes) {
       let recipe = this.recipes[key];
       let valid = false;
+      //console.log(recipe);
 
       for (const itemType in recipe["ingredients"]) {
+        //console.log(recipe["ingredients"][itemType]);
         if (this.inventoryStats[itemType] >= recipe["ingredients"][itemType]) {
           valid = true;
         } else {
@@ -113,13 +116,22 @@ class Crafting {
         }
       }
       if (valid && this.recipeNotInValidRecipes(recipe)) {
+        console.log("getting here");
         this.validRecipes.push(recipe);
       }
     }
+    //console.log(this.validRecipes);
   }
 
   recipeNotInValidRecipes(recipe) {
+    console.log("recipe not in valid recipes");
     for (let recipeItem of this.validRecipes) {
+      console.log("recipe not in valid recieps loop");
+      console.log(
+        `Comparing ${recipe.name} && ${recipeItem.name} result = ${
+          recipe == recipeItem
+        }`
+      );
       if (recipe == recipeItem) {
         return false;
       }
@@ -145,7 +157,6 @@ class Crafting {
         }
       }
     }
+    //console.log(this.inventoryStats);
   }
 }
-
-
