@@ -24,7 +24,7 @@ class Crafting {
         name: "bow",
         ingredients: {
           wood: 2,
-          string: 1,
+          thread: 1,
         },
       },
     };
@@ -32,6 +32,10 @@ class Crafting {
     this.inventoryStats = {};
     this.index = 0;
     this.currentRecipe;
+
+    this.sprite.addAnimation("craftingMenu", "../assets/crafting/craftingMenu.png");
+    this.leftArrowSprite.addAnimation("leftArrow", "../assets/crafting/leftCraftArrow.png");
+    this.rightArrowSprite.addAnimation("rightArrow", "../assets/crafting/rightCraftArrow.png");
   }
 
   showSelf() {
@@ -40,7 +44,7 @@ class Crafting {
 
     drawSprite(this.rightArrowSprite);
 
-    rect(this.sprite.position.x, this.sprite.position.y, 30, 30);
+    rect(this.sprite.position.x - 15, this.sprite.position.y - 15, 30, 30);
   }
   cycleRecipes(key) {
     if (key == "beginning") {
@@ -147,5 +151,4 @@ class Crafting {
     }
   }
 }
-
 
