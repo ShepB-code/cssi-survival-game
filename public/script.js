@@ -74,7 +74,6 @@ function setup() {
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Lettuce(random(MAP_W)));
   }
-]
 
   // Initializing enemies
   for (let i = 0; i < 5; i++) {
@@ -190,8 +189,8 @@ function drawEnemies() {
       enemy.sprite.position.x > currentCanvasX &&
       enemy.sprite.position.x < currentCanvasX + width
     ) {
-      //enemy.showSelf();
-      //enemy.handleMovement(player);
+      enemy.showSelf();
+      enemy.handleMovement(player);
     }
   });
 }

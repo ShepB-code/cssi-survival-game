@@ -44,6 +44,10 @@ class Thread extends Item {
     this.height = 10;
     this.sprite.shapeColor = color(90);
     this.sprite.setCollider("rectangle", 0, 0, this.width, this.height);
+    this.sprite.addAnimation(
+      "string",
+      "../assets/material/string.png"
+    );
   }
 
   showSelf() {
@@ -62,6 +66,10 @@ class Wood extends Item {
     this.height = 10;
     this.sprite.shapeColor = color(35, 71, 38);
     this.sprite.setCollider("rectangle", 0, 0, this.width, this.height);
+    this.sprite.addAnimation(
+      "wood",
+      "../assets/material/log.png"
+    );
   }
 
   showSelf() {
@@ -78,6 +86,11 @@ class Beef extends Item {
     this.radius = 5;
     this.sprite.shapeColor = color(351, 89, 71)
     this.sprite.setCollider("circle", 0, 0, this.radius);
+
+    this.sprite.addAnimation(
+      "beef",
+      "../assets/item/beef.png"
+    );
   }
 
   showSelf() {
@@ -95,6 +108,10 @@ class Lettuce extends Item {
     this.radius = 5;
     this.sprite.shapeColor = color(115, 100, 100)
     this.sprite.setCollider("circle", 0, 0, this.radius);
+    this.sprite.addAnimation(
+      "lettuce",
+      "../assets/item/lettuce.png"
+    );
   }
 
   showSelf() {
@@ -112,6 +129,11 @@ class Bow extends Item {
     this.radius = 5;
     this.sprite.shapeColor = color(50)
     this.sprite.setCollider("circle", 0, 0, this.radius);
+
+    this.sprite.addAnimation(
+      "bow",
+      "../assets/item/bow.png"
+    );
   }
 
   showSelf() {
@@ -126,6 +148,10 @@ class Sword extends Item {
     this.height = 10;
     this.sprite.shapeColor = color(30, 100, 40)
     this.sprite.setCollider("rectangle", 0, 0, this.width, this.height);
+    this.sprite.addAnimation(
+      "sword",
+      "../assets/item/sword.png"
+    );
   }
 
   showSelf() {
