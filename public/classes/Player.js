@@ -11,7 +11,8 @@ class Player {
     this.inventory; //initialized in the setup function
     this.health = 100;
     this.playerItem;
-
+    
+    this.craftingIsOpen = false;
     this.sprite.addAnimation(
       "idleRight",
       "../assets/player/idle/idleRight.png",
