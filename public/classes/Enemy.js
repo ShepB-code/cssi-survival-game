@@ -237,6 +237,7 @@ class Enemy {
   handleDeath() {
     this.sprite.remove();
   }
+  
   damagePlayer(player) {
     if (player.health > 0) {
       player.health--;

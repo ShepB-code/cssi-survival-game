@@ -149,8 +149,7 @@ function draw() {
     moveBackgrounds(xOffset);
   }
 
-  //show enemies
-  drawEnemies();
+  
 
   //draw player
 
@@ -169,6 +168,9 @@ function draw() {
 
   //draw items
   drawItems();
+
+  //show enemies
+  drawEnemies();
 }
 
 function drawBackgrounds() {
@@ -258,6 +260,19 @@ function keyPressed() {
   }
 }
 
+function handleEating(index, satisfaction) {
+  if (player.health != 100) {
+    inventory.removeItem();
+    itemArray.splice(index, 1);
+  }
+
+  player.health += satisfaction;
+
+  if (player.health >= 100) {
+    player.health = 100;
+  }
+}
+
 function mouseClicked() {
   if (inventory.currentItem != null) {
     let index;
@@ -268,13 +283,9 @@ function mouseClicked() {
       }
     }
     if (inventory.currentItem.name == "beef") {
-      player.health += 20;
-      inventory.removeItem();
-      itemArray.splice(index, 1);
+      handleEating(index, 20);
     } else if (inventory.currentItem.name == "lettuce") {
-      player.health += 20;
-      inventory.removeItem();
-      itemArray.splice(index, 1);
+      handleEating(index, 15);
     } else if (inventory.currentItem.name == "sword") {
       for (let enemy of enemyArray) {
         if (player.sprite.collide(enemy.sprite)) {

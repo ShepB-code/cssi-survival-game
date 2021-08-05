@@ -142,6 +142,7 @@ class Player {
   }
   handleKeyPress(key) {
     if (key == "q") {
+      console.log(this.inventory.currentItem);
       if (this.inventory.currentItem != null) {
         this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
         this.playerItem.sprite.position.y = this.sprite.position.y;
