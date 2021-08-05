@@ -11,9 +11,8 @@ class Enemy {
     this.x = x;
     this.speed = 0.5;
     this.attacking = false;
-
+    this.health = 1;
     this.xSpeed = 2.75;
-
 
     this.sprite.addAnimation(
       "idle",
@@ -158,24 +157,24 @@ class Enemy {
       "../assets/enemy/attack/attackLeft18.png"
     );
 
-    // this.sprite.addAnimation(
-    //   "dead",
-    //   "../assets/enemy/death/dead.png",
-    //   "../assets/enemy/death/dead2.png",
-    //   "../assets/enemy/death/dead3.png",
-    //   "../assets/enemy/death/dead4.png",
-    //   "../assets/enemy/death/dead5.png",
-    //   "../assets/enemy/death/dead6.png",
-    //   "../assets/enemy/death/dead7.png",
-    //   "../assets/enemy/death/dead8.png",
-    //   "../assets/enemy/death/dead9.png",
-    //   "../assets/enemy/death/dead10.png",
-    //   "../assets/enemy/death/dead11.png",
-    //   "../assets/enemy/death/dead12.png",
-    //   "../assets/enemy/death/dead13.png",
-    //   "../assets/enemy/death/dead14.png",
-    //   "../assets/enemy/death/dead15.png"
-    // );
+    this.sprite.addAnimation(
+      "dead",
+      "../assets/enemy/death/dead.png",
+      "../assets/enemy/death/dead2.png",
+      "../assets/enemy/death/dead3.png",
+      "../assets/enemy/death/dead4.png",
+      "../assets/enemy/death/dead5.png",
+      "../assets/enemy/death/dead6.png",
+      "../assets/enemy/death/dead7.png",
+      "../assets/enemy/death/dead8.png",
+      "../assets/enemy/death/dead9.png",
+      "../assets/enemy/death/dead10.png",
+      "../assets/enemy/death/dead11.png",
+      "../assets/enemy/death/dead12.png",
+      "../assets/enemy/death/dead13.png",
+      "../assets/enemy/death/dead14.png",
+      "../assets/enemy/death/dead15.png"
+    );
     // this.sprite.addAnimation(
     //   "deadLeft",
     //   "../assets/enemy/death/deadLeft.png",
@@ -204,7 +203,7 @@ class Enemy {
   moveTowardsPlayer(playerX, playerY) {
     let run = playerX - this.sprite.position.x;
     let rise = playerY - this.sprite.position.y;
-    let length = sqrt((rise*rise) + (run*run));
+    let length = sqrt(rise * rise + run * run);
     // let length = sqrt(run * run);
     let unitX = run / length;
 
@@ -215,7 +214,6 @@ class Enemy {
 
   handleMovement(player) {
     if (!this.sprite.displace(player.sprite)) {
-      
       this.moveTowardsPlayer(
         player.sprite.position.x,
         player.sprite.position.y
@@ -236,10 +234,11 @@ class Enemy {
       this.sprite.position.x += -this.xSpeed;
     }
   }
-
-  
+  handleDeath() {
+    this.sprite.remove();
+  }
   damagePlayer(player) {
-    if(player.health > 0) {
+    if (player.health > 0) {
       player.health--;
     }
   }
@@ -251,8 +250,8 @@ class Enemy {
       this.sprite.changeAnimation("run");
     }
 
-    if(this.attacking) {
-      if(xDiff < 0) {
+    if (this.attacking) {
+      if (xDiff < 0) {
         this.sprite.changeAnimation("attackLeft");
       } else {
         this.sprite.changeAnimation("attack");
