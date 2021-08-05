@@ -59,7 +59,6 @@ function setup() {
 
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Thread(random(MAP_W)));
-
   }
 
   for (let i = 0; i < 10; i++) {
@@ -123,7 +122,6 @@ function draw() {
 
   player.chooseAnimation(xOffset);
 
-
   //update player, crafting, and inventory positions
   player.moveSelf(xOffset, yOffset);
   crafting.updatePosition(player.sprite.position.x);
@@ -151,12 +149,8 @@ function draw() {
     moveBackgrounds(xOffset);
   }
 
-
   //show enemies
   drawEnemies();
-
-  //draw inventory
-  inventory.showSelf();
 
   //draw player
 
@@ -166,6 +160,8 @@ function draw() {
   player.showSelf();
   player.handleDeath();
 
+  //draw inventory
+  inventory.showSelf();
 
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
@@ -212,7 +208,6 @@ function drawItems() {
       item.sprite.position.x > currentCanvasX &&
       item.sprite.position.x < currentCanvasX + width
     ) {
-      
       item.showSelf();
     }
   });
@@ -226,7 +221,7 @@ function moveBackgrounds(xOffset) {
 
 function keyPressed() {
   console.log(keyCode);
-  
+
   if (keyCode == 32) {
     //space
     player.handleKeyPress(key);
@@ -241,7 +236,6 @@ function keyPressed() {
     player.handleKeyPress(key);
 
     crafting.cycleRecipes("beginning");
-
   }
   if (keyCode == 81) {
     //q
@@ -268,23 +262,27 @@ function mouseClicked() {
   if (inventory.currentItem != null) {
     let index;
     for (let i = 0; i < itemArray.length; i++) {
-        if (itemArray[i] == inventory.currentItem) {
-          index = i;
-          break;
-        }
+      if (itemArray[i] == inventory.currentItem) {
+        index = i;
+        break;
       }
+    }
     if (inventory.currentItem.name == "beef") {
       player.health += 20;
       inventory.removeItem();
       itemArray.splice(index, 1);
-    }
-    if (inventory.currentItem.name == "lettuce") {
+    } else if (inventory.currentItem.name == "lettuce") {
       player.health += 20;
       inventory.removeItem();
       itemArray.splice(index, 1);
+    } else if (inventory.currentItem.name == "sword") {
+      for (let enemy of enemyArray) {
+        if (player.sprite.collide(enemy.sprite)) {
+          player.damageEnemy(enemy, inventory.currentItem);
+        }
+      }
     }
   } else {
-    
   }
 }
 
@@ -310,5 +308,3 @@ function mouseClicked() {
 // }
 
 //player.showInventory();
-
-
