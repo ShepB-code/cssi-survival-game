@@ -51,12 +51,12 @@ function setup() {
 
   player = new Player();
   inventory = new Inventory(0, height);
-  health = new HealthBar(0, 225);
+  health = new HealthBar(0, 225, player.health);
   player.inventory = inventory;
 
-  // for (let i = 0; i < 100; i++) {
-  //itemArray.push(new Rock(random(MAP_W), random(MAP_H)));
-  //}
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Rock(random(MAP_W)));
+  }
 
   // Initializing enemies
   for (let i = 0; i < 5; i++) {
@@ -102,13 +102,11 @@ function draw() {
   camera.position.x = player.sprite.position.x;
 
   //getting x and y coordinates to increment our player by
+  player.handlePosition(); //handles the y position with jumping
   let [xOffset, yOffset] = player.handleMovement();
 
-  if (xOffset == 0) {
-    player.sprite.changeAnimation("idle");
-  } else {
-    player.sprite.changeAnimation("run");
-  }
+  player.chooseAnimation(xOffset);
+
   player.moveSelf(xOffset, yOffset);
 
   camera.off();
@@ -137,6 +135,9 @@ function draw() {
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
   health.showSelf();
+
+  //draw items
+  drawItems();
 }
 
 function drawBackgrounds() {
@@ -157,13 +158,29 @@ function drawEnemies() {
   });
 }
 
-function moveBackgrounds(xOffset) {
-  layersArray.forEach((layer) => {
-    layer.moveSelf(xOffset > 0, currentCanvasX);
+function drawItems() {
+  itemArray.forEach((item) => {
+    if (
+      item.sprite.position.x > currentCanvasX &&
+      item.sprite.position.x < currentCanvasX + width
+    ) {
+      item.showSelf();
+    }
   });
 }
+
+function moveBackgrounds(xOffset) {
+  layersArray.forEach((layer) => {
+    layer.moveSelf(xOffset > 0, currentCanvasX); //moveSelf(directionBoolean, currentXposition)
+  });
+}
+
 function keyPressed() {
   console.log(keyCode);
+  if (keyCode == 32) {
+    //space
+    player.handleKeyPress(key);
+  }
   if (keyCode == 81) {
     //q
     player.handleKeyPress(key);
@@ -199,14 +216,5 @@ function keyPressed() {
 // }
 
 //player.showInventory();
-//for (let i = 0; i < itemArray.length; i++) {
-//if (
-//itemArray[i].sprite.position.x > currentCanvasX &&
-//itemArray[i].sprite.position.x < currentCanvasX + width &&
-//itemArray[i].sprite.position.y > currentCanvasY &&
-//itemArray[i].sprite.position.y < currentCanvasY + height
-//) {
-//itemArray[i].showSelf();
-//}
-//}
+
 //itemPlayerCollision();

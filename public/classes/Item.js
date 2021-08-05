@@ -1,6 +1,6 @@
 class Item {
-  constructor(x, y, width, height, name) {
-    this.sprite = createSprite(x, y, width, height);
+  constructor(x, name) {
+    this.sprite = createSprite(x, height + 120, 20, 20);
     this.name = name;
   }
 
@@ -11,7 +11,7 @@ class Item {
 }
 class Rock extends Item {
   constructor(x, y) {
-    super(x, y, 10, 10, "rock");
+    super(x, "rock");
     this.radius = 5;
     this.sprite.setCollider("circle", 0, 0, this.radius);
   }

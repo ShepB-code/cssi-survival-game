@@ -1,25 +1,73 @@
 class Player {
   constructor() {
     this.sprite = createSprite(width / 2, height + 120, 50, 50);
-    this.sprite.addAnimation(
-      "idle",
-      "../assets/player/idle.png",
-      "../assets/player/idle2.png",
-      "../assets/player/idle3.png"
-    );
-    this.sprite.addAnimation(
-      "run",
-      "../assets/player/run.png",
-      "../assets/player/run2.png",
-      "../assets/player/run3.png",
-      "../assets/player/run4.png",
-      "../assets/player/run5.png",
-      "../assets/player/run6.png"
-    );
     this.xSpeed = 1.5;
     this.ySpeed = 3;
-    this.inventory;
+    this.jumping = false;
+    this.falling = false;
+    this.maxJumpY = this.sprite.position.y - 60;
+    this.groundY = this.sprite.position.y;
+    this.direction = "right";
+    this.inventory; //initialized in the setup function
+    this.health = 100;
     this.playerItem;
+
+    this.sprite.addAnimation(
+      "idleRight",
+      "../assets/player/idle/idleRight.png",
+      "../assets/player/idle/idle2Right.png",
+      "../assets/player/idle/idle3Right.png"
+    );
+    this.sprite.addAnimation(
+      "idleLeft",
+      "../assets/player/idle/idleLeft.png",
+      "../assets/player/idle/idle2Left.png",
+      "../assets/player/idle/idle3Left.png"
+    );
+    this.sprite.addAnimation(
+      "runRight",
+      "../assets/player/run/runRight.png",
+      "../assets/player/run/run2Right.png",
+      "../assets/player/run/run3Right.png",
+      "../assets/player/run/run4Right.png",
+      "../assets/player/run/run5Right.png",
+      "../assets/player/run/run6Right.png"
+    );
+    this.sprite.addAnimation(
+      "runLeft",
+      "../assets/player/run/runLeft.png",
+      "../assets/player/run/run2Left.png",
+      "../assets/player/run/run3Left.png",
+      "../assets/player/run/run4Left.png",
+      "../assets/player/run/run5Left.png",
+      "../assets/player/run/run6Left.png"
+    );
+
+    this.sprite.addAnimation(
+      "jumpRight",
+      "../assets/player/jump/jumpRight.png",
+      "../assets/player/jump/jump2Right.png",
+      "../assets/player/jump/jump3Right.png",
+      "../assets/player/jump/jump4Right.png"
+    );
+    this.sprite.addAnimation(
+      "jumpLeft",
+      "../assets/player/jump/jumpLeft.png",
+      "../assets/player/jump/jump2Left.png",
+      "../assets/player/jump/jump3Left.png",
+      "../assets/player/jump/jump4Left.png"
+    );
+    this.sprite.addAnimation(
+      "fallRight",
+      "../assets/player/fall/fallRight.png",
+      "../assets/player/fall/fall2Right.png"
+    );
+    this.sprite.addAnimation(
+      "fallLeft",
+      "../assets/player/fall/fallLeft.png",
+      "../assets/player/fall/fall2Left.png"
+    );
+
     // this.playerItem = new Item(
     //this.sprite.position.x,
     //this.sprite.position.y,
@@ -48,10 +96,6 @@ class Player {
       //key = w
       //yIncrement += -this.ySpeed;
     }
-    if (keyIsDown(83)) {
-      //key = s
-      //yIncrement += this.ySpeed;
-    }
     if (keyIsDown(65)) {
       //key = a
       xIncrement += -this.xSpeed;
@@ -64,15 +108,71 @@ class Player {
 
     return [xIncrement, yIncrement];
   }
+  handlePosition() {
+    //console.log(this.inJump);
+    if (this.jumping) {
+      //going up
+      if (this.sprite.position.y < this.maxJumpY) {
+        this.falling = true;
+        this.jumping = false;
+      } else {
+        this.sprite.position.y += -this.ySpeed;
+      }
+    }
 
+    if (this.falling) {
+      if (this.sprite.position.y > this.groundY) {
+        this.falling = false;
+        this.sprite.position.y = this.groundY; //resetting player
+      } else {
+        this.sprite.position.y += this.ySpeed;
+      }
+    }
+  }
   handleKeyPress(key) {
     if (key == "q") {
       this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
       this.playerItem.sprite.position.y = this.sprite.position.y - 20;
       this.inventory.removeItem();
+    } else if (key == " ") {
+      if (!this.jumping && !this.falling) {
+        //to not allow double jumping
+        this.sprite.position.y += -this.ySpeed; //start jump
+        this.jumping = true;
+        this.sprite.changeAnimation("jump");
+      }
     }
   }
+  chooseAnimation(xOffset) {
+    if (xOffset > 0) {
+      player.sprite.changeAnimation("runRight");
+      this.direction = "right";
+    } else if (xOffset < 0) {
+      player.sprite.changeAnimation("runLeft");
+      this.direction = "left";
+    } else {
+      if (this.direction == "right") {
+        player.sprite.changeAnimation("idleRight");
+      } else {
+        player.sprite.changeAnimation("idleLeft");
+      }
+    }
 
+    if (player.jumping) {
+      if (this.direction == "right") {
+        player.sprite.changeAnimation("jumpRight");
+      } else {
+        player.sprite.changeAnimation("jumpLeft");
+      }
+    }
+    if (player.falling) {
+      if (this.direction == "right") {
+        player.sprite.changeAnimation("fallRight");
+      } else {
+        player.sprite.changeAnimation("fallLeft");
+      }
+    }
+  }
   itemPlayerCollision(item) {
     if (
       collideRectRect(
