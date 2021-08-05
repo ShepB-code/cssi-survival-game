@@ -86,7 +86,7 @@ class Player {
   }
 
   handleDeath() {
-    if(this.health <= 0) {
+    if (this.health <= 0) {
       this.health = 0;
       noLoop();
     }
@@ -206,6 +206,16 @@ class Player {
       )
     ) {
       return true;
+    }
+  }
+
+  damageEnemy(enemy, weapon) {
+    if (enemy.health > 0) {
+      enemy.health -= weapon.damage;
+    }
+
+    if (enemy.health < 1) {
+      enemy.handleDeath();
     }
   }
 }
