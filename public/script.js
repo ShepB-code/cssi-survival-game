@@ -11,10 +11,17 @@ let currentCanvasX;
 let currentCanvasY;
 let canvas;
 let player;
+// let player2;
 let itemArray = [];
 let enemyArray = [];
 let inventory;
 let health;
+let crafting;
+// let socket;
+// let data = {
+//   "x": player.sprite.position.x,
+//   "y": player.sprite.position.y,
+// }
 
 let layersArray;
 
@@ -48,13 +55,30 @@ function preload() {
 function setup() {
   canvas = createCanvas(927, 590);
   colorMode(HSB, 360, 100, 100);
+  frameRate = 144;
+
+  // socket = io.connect("http://localhost:3000/")
+  // socket.on("player2", movePlayer2);
   player = new Player();
   inventory = new Inventory(0, height);
+  crafting = new Crafting();
   health = new HealthBar(0, 225, player.health);
   player.inventory = inventory;
 
   for (let i = 0; i < 10; i++) {
-    itemArray.push(new Rock(random(MAP_W)));
+    itemArray.push(new Thread(random(MAP_W)));
+  }
+
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Wood(random(MAP_W)));
+  }
+
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Beef(random(MAP_W)));
+  }
+
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Lettuce(random(MAP_W)));
   }
 
   // Initializing enemies
@@ -97,11 +121,6 @@ function draw() {
   currentCanvasX = player.sprite.position.x - width / 2;
   currentCanvasY = 0;
 
-  if (mouseIsPressed) {
-    camera.zoom = 1.5;
-  } else {
-    camera.zoom = 1;
-  }
   //updating our camera x position with the x coordinate of our player (height remains the same)
   camera.position.x = player.sprite.position.x;
 
@@ -109,22 +128,24 @@ function draw() {
   player.handlePosition(); //handles the y position with jumping
   let [xOffset, yOffset] = player.handleMovement();
 
-  if (xOffset > 0) {
-    player.sprite.changeAnimation("run");
-  } else if (xOffset < 0) {
-    player.sprite.changeAnimation("runLeft");
-  } else {
-    player.sprite.changeAnimation("idle");
-  }
+  player.chooseAnimation(xOffset);
 
-  if (player.jumping || player.falling) {
-    player.sprite.changeAnimation("jump");
-  }
-  player.moveSelf(xOffset, yOffset);
+  // player2.handlePosition(); //handles the y position with jumping
+  // let [xOffset, yOffset] = player2.handleMovement();
 
-  camera.off();
+  // player2.chooseAnimation(xOffset);
 
+  //update player, crafting, and inventory positions
+  // player.moveSelf(xOffset, yOffset);
+  // player2.moveSelf(xOffset, yOffset);
+  crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
+
+  //update crafting inventory stats
+  crafting.updateInventoryStats(inventory);
+
+  crafting.getValidRecipes();
+  camera.off();
 
   camera.on();
 
@@ -135,7 +156,7 @@ function draw() {
     //only move background when we're moving
     moveBackgrounds(xOffset);
   }
-  
+
   //show enemies
   drawEnemies();
 
@@ -143,19 +164,21 @@ function draw() {
   inventory.showSelf();
 
   //draw player
+
+  if (player.craftingIsOpen) {
+    crafting.showSelf();
+  }
   player.showSelf();
+  player.handleDeath();
+  // player2.showSelf();
+  // player2.handleDeath();
 
   //draw health
   health.updatePosition(currentCanvasX, currentCanvasY + 200);
-  health.showSelf();
-  for (let i = 0; i < itemArray.length; i++) {
-    if (
-      itemArray[i].sprite.position.x > currentCanvasX &&
-      itemArray[i].sprite.position.x < currentCanvasX + width
-    ) {
-      itemArray[i].showSelf();
-    }
-  }
+  health.showSelf(player);
+
+  //draw items
+  drawItems();
 }
 
 function drawBackgrounds() {
@@ -165,6 +188,7 @@ function drawBackgrounds() {
 }
 function drawEnemies() {
   enemyArray.forEach((enemy) => {
+    enemy.reverseMap();
     // Rendering enemies and moving if enemy in player view
     if (
       enemy.sprite.position.x > currentCanvasX &&
@@ -172,14 +196,26 @@ function drawEnemies() {
     ) {
       enemy.showSelf();
       enemy.handleMovement(player);
-      // console.log(player.health);
+    }
+  });
+}
+
+function drawItems() {
+  itemArray.forEach((item) => {
+    item.handleMovement();
+    if (
+      item.sprite.position.x > currentCanvasX &&
+      item.sprite.position.x < currentCanvasX + width
+    ) {
+      
+      item.showSelf();
     }
   });
 }
 
 function moveBackgrounds(xOffset) {
   layersArray.forEach((layer) => {
-    layer.moveSelf(xOffset > 0, currentCanvasX);
+    layer.moveSelf(xOffset > 0, currentCanvasX); //moveSelf(directionBoolean, currentXposition)
   });
 }
 
@@ -187,6 +223,11 @@ function keyPressed() {
   console.log(keyCode);
   if (keyCode == 32) {
     //space
+    player.handleKeyPress(key);
+  }
+
+  if (keyCode == 73) {
+    //i
     player.handleKeyPress(key);
   }
   if (keyCode == 81) {
@@ -205,6 +246,10 @@ function keyPressed() {
     }
   }
 }
+
+// function movePlayer2(data) {
+//   player2 = new Player2(data.x, data.y)
+// }
 
 // function itemPlayerCollision(item) {
 //   if (

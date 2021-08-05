@@ -5,16 +5,15 @@ class HealthBar {
     this.health = health;
   }
 
-  showSelf() {
-    push();
+  showSelf(player) {
     fill("red");
-    rect(this.x, this.y, 100, 25);
-    fill("yellow");
-    rect(this.x, this.y, this.health * 2, 25);
-    pop();
-    // if (mouseIsPressed) {
-    //   this.health -= 0.5;
-    // }
+    rect(this.x, this.y, 200, 25);
+    this.takeDamage(player);
+  }
+  
+  takeDamage(player) {
+    fill("green");
+    rect(this.x, this.y, player.health * 2, 25);
   }
 
   updatePosition(canvasX, canvasY) {
