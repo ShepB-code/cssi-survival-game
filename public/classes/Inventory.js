@@ -44,6 +44,7 @@ class Inventory {
       }
       this.currentItemSquare.removeItem();
       this.currentItem = null;
+      this.currentItemSquare.color = "white";
       console.log(this.itemsInInventory);
     }
   }

@@ -18,10 +18,7 @@ let inventory;
 let health;
 let crafting;
 // let socket;
-// let data = {
-//   "x": player.sprite.position.x,
-//   "y": player.sprite.position.y,
-// }
+
 
 let layersArray;
 
@@ -136,7 +133,7 @@ function draw() {
   // player2.chooseAnimation(xOffset);
 
   //update player, crafting, and inventory positions
-  // player.moveSelf(xOffset, yOffset);
+  player.moveSelf(xOffset, yOffset);
   // player2.moveSelf(xOffset, yOffset);
   crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
@@ -156,7 +153,10 @@ function draw() {
     //only move background when we're moving
     moveBackgrounds(xOffset);
   }
-
+  // let data = {
+  //   "x": player.sprite.position.x,
+  //   "y": player.sprite.position.y,
+  // }
   //show enemies
   drawEnemies();
 

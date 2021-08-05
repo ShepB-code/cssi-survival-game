@@ -1,16 +1,16 @@
 class Player2 {
     constructor(x, y) {
       this.sprite = createSprite(x, y, 50, 50);
-      this.xSpeed = 1.5;
-      this.ySpeed = 3;
-      this.jumping = false;
-      this.falling = false;
-      this.maxJumpY = this.sprite.position.y - 60;
-      this.groundY = this.sprite.position.y;
-      this.direction = "right";
-      this.inventory; //initialized in the setup function
-      this.health = 100;
-      this.playerItem;
+    //   this.xSpeed = 1.5;
+    //   this.ySpeed = 3;
+    //   this.jumping = false;
+    //   this.falling = false;
+    //   this.maxJumpY = this.sprite.position.y - 60;
+    //   this.groundY = this.sprite.position.y;
+    //   this.direction = "right";
+    //   this.inventory; //initialized in the setup function
+    //   this.health = 100;
+    //   this.playerItem;
   
       this.sprite.addAnimation(
         "idleRight",
@@ -77,135 +77,132 @@ class Player2 {
   
     showSelf() {
       drawSprite(this.sprite);
-      if (this.inventory.currentItem != null) {
-        this.playerItem = this.inventory.currentItem;
-        this.playerItem.sprite.position.x = this.sprite.position.x;
-        this.playerItem.sprite.position.y = this.sprite.position.y - 20;
-        this.playerItem.showSelf();
-      }
+    //   if (this.inventory.currentItem != null) {
+    //     this.playerItem = this.inventory.currentItem;
+    //     this.playerItem.sprite.position.x = this.sprite.position.x;
+    //     this.playerItem.sprite.position.y = this.sprite.position.y - 20;
+    //     this.playerItem.showSelf();
+    //   }
     }
   
-    handleDeath() {
-      if(this.health <= 0) {
-        this.health = 0;
-        noLoop();
-      }
-    }
+    // handleDeath() {
+    //   if(this.health <= 0) {
+    //     this.health = 0;
+    //     noLoop();
+    //   }
+    // }
   
-    showCrafting() {
-      drawSprite(this.craftingSprite);
-    }
-    moveSelf(xIncrement, yIncrement) {
-      this.sprite.position.x += xIncrement;
-      this.sprite.position.y += yIncrement;
-    }
+    // showCrafting() {
+    //   drawSprite(this.craftingSprite);
+    // }
+
+    // moveSelf(xIncrement, yIncrement) {
+    //   this.sprite.position.x += xIncrement;
+    //   this.sprite.position.y += yIncrement;
+    // }
   
-    handleMovement() {
-      let xIncrement = 0;
-      let yIncrement = 0;
-      if (keyIsDown(87)) {
-        //key = w
-        //yIncrement += -this.ySpeed;
-      }
-      if (keyIsDown(65)) {
-        //key = a
-        xIncrement += -this.xSpeed;
-      }
-      if (keyIsDown(68)) {
-        //key = d
-        xIncrement += this.xSpeed;
-      }
-      //this.moveSelf(xIncrement, yIncrement);
+    // handleMovement() {
+    //   let xIncrement = 0;
+    //   let yIncrement = 0;
+    //   if (keyIsDown(65)) {
+    //     //key = a
+    //     xIncrement += -this.xSpeed;
+    //   }
+    //   if (keyIsDown(68)) {
+    //     //key = d
+    //     xIncrement += this.xSpeed;
+    //   }
+    //   //this.moveSelf(xIncrement, yIncrement);
   
-      return [xIncrement, yIncrement];
-    }
-    handlePosition() {
-      //console.log(this.inJump);
-      if (this.jumping) {
-        //going up
-        if (this.sprite.position.y < this.maxJumpY) {
-          this.falling = true;
-          this.jumping = false;
-        } else {
-          this.sprite.position.y += -this.ySpeed;
-        }
-      }
+    //   return [xIncrement, yIncrement];
+    // }
+    // handlePosition() {
+    //   //console.log(this.inJump);
+    //   if (this.jumping) {
+    //     //going up
+    //     if (this.sprite.position.y < this.maxJumpY) {
+    //       this.falling = true;
+    //       this.jumping = false;
+    //     } else {
+    //       this.sprite.position.y += -this.ySpeed;
+    //     }
+    //   }
   
-      if (this.falling) {
-        if (this.sprite.position.y > this.groundY) {
-          this.falling = false;
-          this.sprite.position.y = this.groundY; //resetting player
-        } else {
-          this.sprite.position.y += this.ySpeed;
-        }
-      }
-    }
-    handleKeyPress(key) {
-      if (key == "q") {
-        if (this.inventory.currentItem != null) {
-          this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
-          this.playerItem.sprite.position.y = this.sprite.position.y;
-          this.inventory.removeItem();
-        }
-      } else if (key == " ") {
-        if (!this.jumping && !this.falling) {
-          //to not allow double jumping
-          this.sprite.position.y += -this.ySpeed; //start jump
-          this.jumping = true;
-        }
-      } else if (key == "i") {
-        if (this.craftingIsOpen) {
-          //close it if it is already open
-          this.craftingIsOpen = false;
-        } else {
-          this.craftingIsOpen = true;
-        }
-      }
-    }
-    chooseAnimation(xOffset) {
-      if (xOffset > 0) {
-        this.sprite.changeAnimation("runRight");
-        this.direction = "right";
-      } else if (xOffset < 0) {
-        this.sprite.changeAnimation("runLeft");
-        this.direction = "left";
-      } else {
-        if (this.direction == "right") {
-          this.sprite.changeAnimation("idleRight");
-        } else {
-          this.sprite.changeAnimation("idleLeft");
-        }
-      }
+    //   if (this.falling) {
+    //     if (this.sprite.position.y > this.groundY) {
+    //       this.falling = false;
+    //       this.sprite.position.y = this.groundY; //resetting player
+    //     } else {
+    //       this.sprite.position.y += this.ySpeed;
+    //     }
+    //   }
+    // }
+    // handleKeyPress(key) {
+    //   if (key == "q") {
+    //     if (this.inventory.currentItem != null) {
+    //       this.playerItem.sprite.position.x = this.sprite.position.x; //setting the position one more time so it leaves with the player
+    //       this.playerItem.sprite.position.y = this.sprite.position.y;
+    //       this.inventory.removeItem();
+    //     }
+    //   } else if (key == " ") {
+    //     if (!this.jumping && !this.falling) {
+    //       //to not allow double jumping
+    //       this.sprite.position.y += -this.ySpeed; //start jump
+    //       this.jumping = true;
+    //     }
+    //   } else if (key == "i") {
+    //     if (this.craftingIsOpen) {
+    //       //close it if it is already open
+    //       this.craftingIsOpen = false;
+    //     } else {
+    //       this.craftingIsOpen = true;
+    //     }
+    //   }
+    // }
+    // chooseAnimation(xOffset) {
+    //   if (xOffset > 0) {
+    //     this.sprite.changeAnimation("runRight");
+    //     this.direction = "right";
+    //   } else if (xOffset < 0) {
+    //     this.sprite.changeAnimation("runLeft");
+    //     this.direction = "left";
+    //   } else {
+    //     if (this.direction == "right") {
+    //       this.sprite.changeAnimation("idleRight");
+    //     } else {
+    //       this.sprite.changeAnimation("idleLeft");
+    //     }
+    //   }
   
-      if (this.jumping) {
-        if (this.direction == "right") {
-          this.sprite.changeAnimation("jumpRight");
-        } else {
-          this.sprite.changeAnimation("jumpLeft");
-        }
-      }
-      if (this.falling) {
-        if (this.direction == "right") {
-          this.sprite.changeAnimation("fallRight");
-        } else {
-          this.sprite.changeAnimation("fallLeft");
-        }
-      }
-    }
-    itemPlayerCollision(item) {
-      if (
-        collideRectRect(
-          this.sprite.position.x,
-          this.sprite.position.y,
-          50,
-          50,
-          item.sprite.position.x,
-          item.sprite.position.y,
-          20,
-          20
-        )
-      ) {
-        return true;
-      }
-    }
+    //   if (this.jumping) {
+    //     if (this.direction == "right") {
+    //       this.sprite.changeAnimation("jumpRight");
+    //     } else {
+    //       this.sprite.changeAnimation("jumpLeft");
+    //     }
+    //   }
+    //   if (this.falling) {
+    //     if (this.direction == "right") {
+    //       this.sprite.changeAnimation("fallRight");
+    //     } else {
+    //       this.sprite.changeAnimation("fallLeft");
+    //     }
+    //   }
+    // }
+    // itemPlayerCollision(item) {
+    //   if (
+    //     collideRectRect(
+    //       this.sprite.position.x,
+    //       this.sprite.position.y,
+    //       50,
+    //       50,
+    //       item.sprite.position.x,
+    //       item.sprite.position.y,
+    //       20,
+    //       20
+    //     )
+    //   ) {
+    //     return true;
+    //   }
+    // }
   }
