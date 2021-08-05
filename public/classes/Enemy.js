@@ -197,7 +197,6 @@ class Enemy {
 
   showSelf() {
     drawSprite(this.sprite);
-    this.sprite.debug = mouseIsPressed;
   }
 
   moveTowardsPlayer(playerX, playerY) {
