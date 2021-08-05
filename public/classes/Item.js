@@ -87,6 +87,12 @@ class Beef extends Item {
   handleMovement() {
     super.handleMovement();
   }
+
+  useItem() {
+    if (health <= 80) {
+      health += 20
+    }
+  }
 }
 
 class Lettuce extends Item {
@@ -103,6 +109,12 @@ class Lettuce extends Item {
 
   handleMovement() {
     super.handleMovement();
+  }
+
+  useItem() {
+    if (health <= 80) {
+      health += 20
+    }
   }
 }
 
