@@ -35,7 +35,7 @@ class Thread extends Item {
 
 class Wood extends Item {
   constructor(x, y) {
-    super(x, y, 10, 10, "wood");
+    super(x, "wood");
     this.width = 10;
     this.height = 10;
     this.sprite.setCollider("rectangle", 0, 0, this.width, this.height);

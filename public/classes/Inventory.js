@@ -2,6 +2,7 @@ class Inventory {
   constructor(x, y) {
     this.squareSize = 30;
     this.items = {};
+    this.itemsInInventory = [];
     for (let i = 1; i < 10; i++) {
       this.items[i] = new InventorySquare(
         x + this.squareSize * (i - 1),
@@ -27,12 +28,21 @@ class Inventory {
     for (const key in this.items) {
       if (!this.items[key].hasItem()) {
         this.items[key].addItem(item);
+        this.itemsInInventory.push(item);
+        console.log(this.itemsInInventory);
         break;
       }
     }
   }
   removeItem() {
     if (this.currentItemSquare != null) {
+      for (let i = 0; i < this.itemsInInventory.length; i++) {
+        //removing item from the array
+        if (this.currentItemSquare.item == this.itemsInInventory[i]) {
+          this.itemsInInventory.splice(i, 1);
+        }
+      }
+      console.log(this.itemsInInventory);
       this.currentItemSquare.removeItem();
       this.currentItem = null;
     }
