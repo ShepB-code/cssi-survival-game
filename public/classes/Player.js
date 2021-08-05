@@ -84,6 +84,10 @@ class Player {
       this.playerItem.showSelf();
     }
   }
+
+  showCrafting() {
+    drawSprite(this.craftingSprite);
+  }
   moveSelf(xIncrement, yIncrement) {
     this.sprite.position.x += xIncrement;
     this.sprite.position.y += yIncrement;
@@ -139,7 +143,13 @@ class Player {
         //to not allow double jumping
         this.sprite.position.y += -this.ySpeed; //start jump
         this.jumping = true;
-        this.sprite.changeAnimation("jump");
+      }
+    } else if (key == "i") {
+      if (this.craftingIsOpen) {
+        //close it if it is already open
+        this.craftingIsOpen = false;
+      } else {
+        this.craftingIsOpen = true;
       }
     }
   }

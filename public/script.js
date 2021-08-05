@@ -15,6 +15,7 @@ let itemArray = [];
 let enemyArray = [];
 let inventory;
 let health;
+let crafting;
 
 let layersArray;
 
@@ -51,11 +52,16 @@ function setup() {
 
   player = new Player();
   inventory = new Inventory(0, height);
+  crafting = new Crafting();
   health = new HealthBar(0, 225, player.health);
   player.inventory = inventory;
 
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Rock(random(MAP_W)));
+  }
+
+  for (let i = 0; i < 10; i++) {
+    itemArray.push(new Wood(random(MAP_W)));
   }
 
   // Initializing enemies
@@ -107,11 +113,16 @@ function draw() {
 
   player.chooseAnimation(xOffset);
 
+  //update player, crafting, and inventory positions
   player.moveSelf(xOffset, yOffset);
-
-  camera.off();
-
+  crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
+
+  //update crafting inventory stats
+  crafting.updateInventoryStats(inventory);
+
+  crafting.getValidRecipes();
+  camera.off();
 
   camera.on();
 
@@ -122,7 +133,7 @@ function draw() {
     //only move background when we're moving
     moveBackgrounds(xOffset);
   }
-  
+
   //show enemies
   drawEnemies();
 
@@ -130,6 +141,10 @@ function draw() {
   inventory.showSelf();
 
   //draw player
+
+  if (player.craftingIsOpen) {
+    crafting.showSelf();
+  }
   player.showSelf();
 
   //draw health
@@ -179,6 +194,11 @@ function keyPressed() {
   console.log(keyCode);
   if (keyCode == 32) {
     //space
+    player.handleKeyPress(key);
+  }
+
+  if (keyCode == 73) {
+    //i
     player.handleKeyPress(key);
   }
   if (keyCode == 81) {
