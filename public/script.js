@@ -194,13 +194,13 @@ function drawEnemies() {
 
 function drawItems() {
   itemArray.forEach((item) => {
-    item.handleMovement();
     if (
       item.sprite.position.x > currentCanvasX &&
       item.sprite.position.x < currentCanvasX + width
     ) {
       item.showSelf();
     }
+    item.handleMovement();
   });
 }
 
