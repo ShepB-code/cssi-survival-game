@@ -203,18 +203,6 @@ function drawItems() {
   });
 }
 
-function drawItems() {
-  itemArray.forEach((item) => {
-    item.handleMovement();
-    if (
-      item.sprite.position.x > currentCanvasX &&
-      item.sprite.position.x < currentCanvasX + width
-    ) {
-      item.showSelf();
-    }
-  });
-}
-
 function moveBackgrounds(xOffset) {
   layersArray.forEach((layer) => {
     layer.moveSelf(xOffset > 0, currentCanvasX); //moveSelf(directionBoolean, currentXposition)
