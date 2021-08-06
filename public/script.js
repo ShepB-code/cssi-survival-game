@@ -4,7 +4,7 @@
  *    mouseX, mouseY, rect, stroke, strokeWeight, width, io
  */
 
-let MAP_W = 1600;
+let MAP_W = 3000;
 let MAP_H = 590;
 
 let currentCanvasX;
@@ -74,7 +74,7 @@ function setup() {
   }
 
   // Initializing enemies
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 7; i++) {
     enemyArray.push(new Enemy(random(MAP_W)));
   }
 

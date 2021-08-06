@@ -33,10 +33,9 @@ class Inventory {
   }
   removeItem() {
     if (this.currentItemSquare != null) {
-    
       this.currentItemSquare.removeItem();
       this.currentItem = null;
-
+      this.currentItemSquare.color = "white";
     }
   }
 

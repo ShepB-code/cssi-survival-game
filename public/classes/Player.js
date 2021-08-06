@@ -145,10 +145,6 @@ class Player {
   handleMovement() {
     let xIncrement = 0;
     let yIncrement = 0;
-    if (keyIsDown(87)) {
-      //key = w
-      //yIncrement += -this.ySpeed;
-    }
     if (keyIsDown(65)) {
       //key = a
       xIncrement += -this.xSpeed;
@@ -208,7 +204,10 @@ class Player {
   handleAttack(enemyArray) {
     if (inventory.currentItem.name == "sword") {
       for (let enemy of enemyArray) {
-        if (player.sprite.collide(enemy.sprite)) {
+        let difference = Math.abs(
+          player.sprite.position.x - enemy.sprite.position.x
+        );
+        if (difference < 40) {
           player.damageEnemy(enemy, inventory.currentItem);
         }
       }
@@ -217,7 +216,7 @@ class Player {
         let difference = Math.abs(
           player.sprite.position.x - enemy.sprite.position.x
         );
-        if (difference < 60) {
+        if (difference < 80) {
           player.damageEnemy(enemy, inventory.currentItem);
         }
       }
