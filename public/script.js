@@ -243,6 +243,7 @@ function spawnItems() {
   //spawn 1 enemy
   enemyArray.push(new Enemy(currentCanvasX, currentCanvasX + width));
 }
+
 //EVENT HANDLERS
 function handleEating(index, satisfaction) {
   if (player.health != 100) {
