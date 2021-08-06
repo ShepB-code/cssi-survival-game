@@ -117,7 +117,7 @@ class Bow extends Item {
     this.radius = 5;
     this.sprite.shapeColor = color(50);
     this.sprite.setCollider("circle", 0, 0, this.radius);
-
+    this.damage = 10;
     this.sprite.addAnimation("bow", "../assets/item/bow.png");
   }
 
