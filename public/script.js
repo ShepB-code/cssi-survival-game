@@ -13,11 +13,12 @@ let canvas;
 let player;
 let itemArray = [];
 let enemyArray = [];
+let layersArray = [];
 let inventory;
 let health;
 let crafting;
 
-let layersArray;
+let spawnerTimer;
 
 let l1, l2, l3, l3Lights, l4, l5, l5Lights, l6, l7, l8, l9;
 
@@ -57,6 +58,7 @@ function setup() {
   health = new HealthBar(0, 225, player.health);
   player.inventory = inventory;
 
+  spawnerTimer = 500;
   for (let i = 0; i < 10; i++) {
     itemArray.push(new Thread(random(MAP_W)));
   }
@@ -79,8 +81,6 @@ function setup() {
   }
 
   camera.position.y = height / 2 + 200;
-
-  layersArray = [];
 
   backgroundLayer1 = new Background(l1, l1, 0.5);
   backgroundLayer2 = new Background(l2, l2, 0.75);
@@ -169,8 +169,15 @@ function draw() {
   if (player.attacking) {
     player.handleAttack(enemyArray);
   }
+
+  spawnerTimer--;
+  if (spawnerTimer < 0) {
+    spawnerTimer = 500;
+    spawnItems();
+  }
 }
 
+//DRAW FUNCTIONS
 function drawBackgrounds() {
   layersArray.forEach((layer) => {
     layer.showSelf();
@@ -202,10 +209,52 @@ function drawItems() {
   });
 }
 
+//MOVE FUNCTIONS
 function moveBackgrounds(xOffset) {
   layersArray.forEach((layer) => {
     layer.moveSelf(xOffset > 0, currentCanvasX); //moveSelf(directionBoolean, currentXposition)
   });
+}
+
+//SPAWN FUNCTIONS
+
+function spawnItems() {
+  //spawn random items
+  let itemTypeArray = ["wood", "thread", "beef", "lettuce"];
+
+  //3 random items
+  for (let i = 0; i < 3; i++) {
+    let itemType = random(itemTypeArray);
+    if (itemType == "wood") {
+      itemArray.push(new Wood(random(currentCanvasX, currentCanvasX + width)));
+    } else if (itemType == "thread") {
+      itemArray.push(
+        new Thread(random(currentCanvasX, currentCanvasX + width))
+      );
+    } else if (itemType == "beef") {
+      itemArray.push(new Beef(random(currentCanvasX, currentCanvasX + width)));
+    } else {
+      itemArray.push(
+        new Lettuce(random(currentCanvasX, currentCanvasX + width))
+      );
+    }
+  }
+
+  //spawn 1 enemy
+  enemyArray.push(new Enemy(currentCanvasX, currentCanvasX + width));
+}
+//EVENT HANDLERS
+function handleEating(index, satisfaction) {
+  if (player.health != 100) {
+    inventory.removeItem();
+    itemArray.splice(index, 1);
+  }
+
+  player.health += satisfaction;
+
+  if (player.health >= 100) {
+    player.health = 100;
+  }
 }
 
 function keyPressed() {
@@ -248,19 +297,6 @@ function keyPressed() {
   }
 }
 
-function handleEating(index, satisfaction) {
-  if (player.health != 100) {
-    inventory.removeItem();
-    itemArray.splice(index, 1);
-  }
-
-  player.health += satisfaction;
-
-  if (player.health >= 100) {
-    player.health = 100;
-  }
-}
-
 function mouseReleased() {
   player.attacking = false;
 }
@@ -284,26 +320,3 @@ function mousePressed() {
     }
   }
 }
-
-// function movePlayer2(data) {
-//   player2 = new Player2(data.x, data.y)
-// }
-
-// function itemPlayerCollision(item) {
-//   if (
-//     collideRectRect(
-//       player.sprite.position.x,
-//       player.sprite.position.y,
-//       50,
-//       50,
-//       item.sprite.position.x,
-//       item.sprite.position.y,
-//       20,
-//       20
-//     )
-//   ) {
-//     return true;
-//   }
-// }
-
-//player.showInventory();

@@ -216,7 +216,8 @@ class Player {
         let difference = Math.abs(
           player.sprite.position.x - enemy.sprite.position.x
         );
-        if (difference < 80) {
+        if (difference < 100) {
+
           player.damageEnemy(enemy, inventory.currentItem);
         }
       }
