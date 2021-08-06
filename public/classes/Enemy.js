@@ -11,7 +11,7 @@ class Enemy {
     this.x = x;
     this.speed = 0.5;
     this.attacking = false;
-    this.health = 1;
+    this.health = 30;
     this.xSpeed = 2.75;
 
     this.sprite.addAnimation(
@@ -236,7 +236,7 @@ class Enemy {
   handleDeath() {
     this.sprite.remove();
   }
-  
+
   damagePlayer(player) {
     if (player.health > 0) {
       player.health--;
