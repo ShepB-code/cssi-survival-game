@@ -211,9 +211,7 @@ class Player {
         );
 
         if (difference < 100) {
-
-          player.damageEnemy(enemy, inventory.currentItem);
-
+          this.damageEnemy(enemy, this.inventory.currentItem);
         }
       }
     }
