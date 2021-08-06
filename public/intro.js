@@ -6,6 +6,8 @@ function Intro() {
     this.enter = function() {
         camera.position.x = 0;
         camera.position.y = height / 2 + 200;
+
+        initializeBackground();
     }
 
     this.setup = function() {
