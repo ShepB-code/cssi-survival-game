@@ -127,10 +127,6 @@ function draw() {
   crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
 
-  //update crafting inventory stats
-  crafting.updateInventoryStats(inventory);
-
-  crafting.getValidRecipes();
   camera.off();
 
   //update crafting inventory stats
@@ -148,8 +144,6 @@ function draw() {
     //only move background when we're moving
     moveBackgrounds(xOffset);
   }
-
-  
 
   //draw player
 
@@ -171,6 +165,10 @@ function draw() {
 
   //show enemies
   drawEnemies();
+
+  if (player.attacking) {
+    player.handleAttack(enemyArray);
+  }
 }
 
 function drawBackgrounds() {
@@ -263,7 +261,10 @@ function handleEating(index, satisfaction) {
   }
 }
 
-function mouseClicked() {
+function mouseReleased() {
+  player.attacking = false;
+}
+function mousePressed() {
   if (inventory.currentItem != null) {
     let index;
     for (let i = 0; i < itemArray.length; i++) {
@@ -277,13 +278,10 @@ function mouseClicked() {
     } else if (inventory.currentItem.name == "lettuce") {
       handleEating(index, 15);
     } else if (inventory.currentItem.name == "sword") {
-      for (let enemy of enemyArray) {
-        if (player.sprite.collide(enemy.sprite)) {
-          player.damageEnemy(enemy, inventory.currentItem);
-        }
-      }
+      player.attacking = true;
+    } else if (inventory.currentItem.name == "bow") {
+      player.attacking = true;
     }
-  } else {
   }
 }
 
