@@ -50,7 +50,6 @@ function preload() {
 function setup() {
   canvas = createCanvas(927, 590);
   colorMode(HSB, 360, 100, 100);
-  frameRate = 144;
 
   player = new Player();
   inventory = new Inventory(0, height);
@@ -183,6 +182,7 @@ function drawBackgrounds() {
     layer.showSelf();
   });
 }
+
 function drawEnemies() {
   enemyArray.forEach((enemy) => {
     enemy.reverseMap();

@@ -127,13 +127,6 @@ class Player {
     }
   }
 
-  handleDeath() {
-    if (this.health <= 0) {
-      this.health = 0;
-      noLoop();
-    }
-  }
-
   showCrafting() {
     drawSprite(this.craftingSprite);
   }
@@ -202,23 +195,25 @@ class Player {
   }
 
   handleAttack(enemyArray) {
-    if (inventory.currentItem.name == "sword") {
+    if (this.inventory.currentItem.name == "sword") {
       for (let enemy of enemyArray) {
         let difference = Math.abs(
-          player.sprite.position.x - enemy.sprite.position.x
+          this.sprite.position.x - enemy.sprite.position.x
         );
         if (difference < 40) {
-          player.damageEnemy(enemy, inventory.currentItem);
+          this.damageEnemy(enemy, this.inventory.currentItem);
         }
       }
     } else {
       for (let enemy of enemyArray) {
         let difference = Math.abs(
-          player.sprite.position.x - enemy.sprite.position.x
+          this.sprite.position.x - enemy.sprite.position.x
         );
+
         if (difference < 100) {
 
           player.damageEnemy(enemy, inventory.currentItem);
+
         }
       }
     }
