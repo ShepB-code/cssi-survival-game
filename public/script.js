@@ -4,7 +4,7 @@
  *    mouseX, mouseY, rect, stroke, strokeWeight, width, io
  */
 
-let MAP_W = 1600;
+let MAP_W = 3000;
 let MAP_H = 590;
 
 let currentCanvasX;
@@ -50,7 +50,6 @@ function preload() {
 function setup() {
   canvas = createCanvas(927, 590);
   colorMode(HSB, 360, 100, 100);
-  frameRate = 144;
 
   player = new Player();
   inventory = new Inventory(0, height);
@@ -76,7 +75,7 @@ function setup() {
   }
 
   // Initializing enemies
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 7; i++) {
     enemyArray.push(new Enemy(random(MAP_W)));
   }
 
@@ -183,6 +182,7 @@ function drawBackgrounds() {
     layer.showSelf();
   });
 }
+
 function drawEnemies() {
   enemyArray.forEach((enemy) => {
     enemy.reverseMap();
@@ -286,6 +286,7 @@ function keyPressed() {
   if (keyCode == 69) {
     if (player.craftingIsOpen) {
       crafting.purchaseItem(inventory, itemArray);
+      player.craftingIsOpen = false;
     } else {
       for (var item of itemArray) {
         if (player.itemPlayerCollision(item)) {

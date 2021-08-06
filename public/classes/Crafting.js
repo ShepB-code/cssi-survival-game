@@ -65,7 +65,6 @@ class Crafting {
     if (this.currentRecipe != null) {
       this.displayItemSprite.changeAnimation(this.currentRecipe["name"]);
       drawSprite(this.displayItemSprite);
-      this.displayItemSprite.debug = mouseIsPressed;
     } else {
       push();
       fill("red");
@@ -134,11 +133,11 @@ class Crafting {
 
       if (this.currentRecipe["name"] == "sword") {
         let item = new Sword(width / 2);
-        allItems.push(item);
+        // allItems.push(item);
         inventory.addItem(item);
       } else if (this.currentRecipe["name"] == "bow") {
         let item = new Bow(width / 2);
-        allItems.push(item);
+        // allItems.push(item);
         inventory.addItem(item);
       }
       this.updateInventoryStats(inventory);
