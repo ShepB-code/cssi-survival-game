@@ -12,6 +12,31 @@ function Intro() {
         instructWidth = 500;
         instructHeight = 350;
 
+        initializeBackground();
+        
+        xPos = -465;
+    }
+
+    this.draw = function() {
+        image( this.sceneManager.bkImage, 0, 0);
+        drawIntroScreen();
+    }
+
+    this.keyPressed = function() {
+        if(key == 'Enter') {
+            this.sceneManager.showScene( Game, key );
+        }
+
+        if(key == ' ') {
+            if(!toggleInstructions) {
+                toggleInstructions = true;
+            } else {
+                toggleInstructions = false;
+            }
+        }
+    }
+
+    function initializeBackground() {
         layersArray = [];
         backgroundLayer1 = new Background(l1, l1, 0.5);
         backgroundLayer2 = new Background(l2, l2, 0.75);
@@ -36,27 +61,6 @@ function Intro() {
         layersArray.push(backgroundLayer7);
         layersArray.push(backgroundLayer8);
         layersArray.push(backgroundLayer9);
-        
-        xPos = -465;
-    }
-
-    this.draw = function() {
-        image( this.sceneManager.bkImage, 0, 0);
-        drawIntroScreen();
-    }
-
-    this.keyPressed = function() {
-        if(key == 'Enter') {
-            this.sceneManager.showScene( Game, key );
-        }
-
-        if(key == ' ') {
-            if(!toggleInstructions) {
-                toggleInstructions = true;
-            } else {
-                toggleInstructions = false;
-            }
-        }
     }
 
     function drawIntroScreen() {
