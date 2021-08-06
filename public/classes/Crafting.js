@@ -8,9 +8,12 @@ class Crafting {
       20,
       20
     );
-
-    this.leftArrowSprite.shapeColor = "red";
-    this.rightArrowSprite.shapeColor = "orange";
+    this.displayItemSprite = createSprite(
+      this.sprite.position.x - 15,
+      this.sprite.position.y - 15,
+      30,
+      30
+    );
 
     this.recipes = {
       sword: {
@@ -30,7 +33,7 @@ class Crafting {
     this.validRecipes = [];
     this.inventoryStats = {};
     this.index = 0;
-    this.currentRecipe;
+    this.currentRecipe = null;
 
     this.sprite.addAnimation(
       "craftingMenu",
@@ -44,15 +47,31 @@ class Crafting {
       "rightArrow",
       "../assets/crafting/rightCraftArrow.png"
     );
+
+    this.displayItemSprite.addAnimation(
+      "bow",
+      "../assets/crafting/bowCrafting.png"
+    );
+    this.displayItemSprite.addAnimation(
+      "sword",
+      "../assets/crafting/swordCrafting.png"
+    );
   }
 
   showSelf() {
     drawSprite(this.sprite);
     drawSprite(this.leftArrowSprite);
-
     drawSprite(this.rightArrowSprite);
-
-    rect(this.sprite.position.x - 15, this.sprite.position.y - 15, 30, 30);
+    if (this.currentRecipe != null) {
+      this.displayItemSprite.changeAnimation(this.currentRecipe["name"]);
+      drawSprite(this.displayItemSprite);
+      this.displayItemSprite.debug = mouseIsPressed;
+    } else {
+      push();
+      fill("red");
+      rect(this.sprite.position.x - 15, this.sprite.position.y - 15, 30, 30);
+      pop();
+    }
   }
   cycleRecipes(key) {
     if (key == "beginning") {
@@ -114,13 +133,18 @@ class Crafting {
       }
 
       if (this.currentRecipe["name"] == "sword") {
-        inventory.addItem(new Sword(width / 2));
+        let item = new Sword(width / 2);
+        allItems.push(item);
+        inventory.addItem(item);
       } else if (this.currentRecipe["name"] == "bow") {
-        inventory.addItem(new Bow(width / 2));
+        let item = new Bow(width / 2);
+        allItems.push(item);
+        inventory.addItem(item);
       }
+      this.updateInventoryStats(inventory);
+      this.getValidRecipes();
+      this.cycleRecipes("beginning");
     }
-    //this.cycleRecipes("beginning");
-    //this.showSelf();
   }
   isValidPurchase() {
     for (const key in this.currentRecipe["ingredients"]) {
@@ -147,6 +171,9 @@ class Crafting {
         this.validRecipes.push(recipe);
       }
     }
+    if (this.validRecipes.length < 1) {
+      this.currentRecipe = null;
+    }
   }
 
   recipeNotInValidRecipes(recipe) {
@@ -161,6 +188,7 @@ class Crafting {
     this.sprite.position.x = x;
     this.leftArrowSprite.position.x = x - this.sprite.width / 2;
     this.rightArrowSprite.position.x = x + this.sprite.width / 2;
+    this.displayItemSprite.position.x = x - 15;
   }
 
   updateInventoryStats(inventory) {

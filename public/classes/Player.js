@@ -11,6 +11,7 @@ class Player {
     this.inventory; //initialized in the setup function
     this.health = 100;
     this.playerItem;
+    this.attacking = false;
 
     this.sprite.addAnimation(
       "idleRight",
@@ -67,7 +68,48 @@ class Player {
       "../assets/player/fall/fallLeft.png",
       "../assets/player/fall/fall2Left.png"
     );
-
+    this.sprite.addAnimation(
+      "attackRight",
+      "../assets/player/attack/attackRight.png",
+      "../assets/player/attack/attack2Right.png",
+      "../assets/player/attack/attack3Right.png",
+      "../assets/player/attack/attack4Right.png",
+      "../assets/player/attack/attack5Right.png"
+    );
+    this.sprite.addAnimation(
+      "attackLeft",
+      "../assets/player/attack/attackLeft.png",
+      "../assets/player/attack/attack2Left.png",
+      "../assets/player/attack/attack3Left.png",
+      "../assets/player/attack/attack4Left.png",
+      "../assets/player/attack/attack5Left.png"
+    );
+    this.sprite.addAnimation(
+      "bowRight",
+      "../assets/player/bow/bowRight.png",
+      "../assets/player/bow/bow2Right.png",
+      "../assets/player/bow/bow2Right.png",
+      "../assets/player/bow/bow3Right.png",
+      "../assets/player/bow/bow4Right.png",
+      "../assets/player/bow/bow5Right.png",
+      "../assets/player/bow/bow6Right.png",
+      "../assets/player/bow/bow7Right.png",
+      "../assets/player/bow/bow8Right.png",
+      "../assets/player/bow/bow9Right.png"
+    );
+    this.sprite.addAnimation(
+      "bowLeft",
+      "../assets/player/bow/bowLeft.png",
+      "../assets/player/bow/bow2Left.png",
+      "../assets/player/bow/bow2Left.png",
+      "../assets/player/bow/bow3Left.png",
+      "../assets/player/bow/bow4Left.png",
+      "../assets/player/bow/bow5Left.png",
+      "../assets/player/bow/bow6Left.png",
+      "../assets/player/bow/bow7Left.png",
+      "../assets/player/bow/bow8Left.png",
+      "../assets/player/bow/bow9Left.png"
+    );
     // this.playerItem = new Item(
     //this.sprite.position.x,
     //this.sprite.position.y,
@@ -162,6 +204,25 @@ class Player {
       }
     }
   }
+
+  handleAttack(enemyArray) {
+    if (inventory.currentItem.name == "sword") {
+      for (let enemy of enemyArray) {
+        if (player.sprite.collide(enemy.sprite)) {
+          player.damageEnemy(enemy, inventory.currentItem);
+        }
+      }
+    } else {
+      for (let enemy of enemyArray) {
+        let difference = Math.abs(
+          player.sprite.position.x - enemy.sprite.position.x
+        );
+        if (difference < 60) {
+          player.damageEnemy(enemy, inventory.currentItem);
+        }
+      }
+    }
+  }
   chooseAnimation(xOffset) {
     if (xOffset > 0) {
       this.sprite.changeAnimation("runRight");
@@ -189,6 +250,23 @@ class Player {
         this.sprite.changeAnimation("fallRight");
       } else {
         this.sprite.changeAnimation("fallLeft");
+      }
+    }
+
+    if (this.attacking) {
+      if (this.inventory.currentItem.name == "sword") {
+        if (this.direction == "right") {
+          this.sprite.changeAnimation("attackRight");
+        } else {
+          this.sprite.changeAnimation("attackLeft");
+        }
+      } else {
+        console.log("choosing bow");
+        if (this.direction == "right") {
+          this.sprite.changeAnimation("bowRight");
+        } else {
+          this.sprite.changeAnimation("bowLeft");
+        }
       }
     }
   }

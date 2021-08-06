@@ -145,8 +145,6 @@ function draw() {
     moveBackgrounds(xOffset);
   }
 
-  
-
   //draw player
 
   if (player.craftingIsOpen) {
@@ -167,6 +165,10 @@ function draw() {
 
   //show enemies
   drawEnemies();
+
+  if (player.attacking) {
+    player.handleAttack(enemyArray);
+  }
 }
 
 function drawBackgrounds() {
@@ -182,8 +184,8 @@ function drawEnemies() {
       enemy.sprite.position.x > currentCanvasX &&
       enemy.sprite.position.x < currentCanvasX + width
     ) {
-      // enemy.showSelf();
-      // enemy.handleMovement(player);
+      enemy.showSelf();
+      enemy.handleMovement(player);
     }
   });
 }
@@ -258,7 +260,10 @@ function handleEating(index, satisfaction) {
   }
 }
 
-function mouseClicked() {
+function mouseReleased() {
+  player.attacking = false;
+}
+function mousePressed() {
   if (inventory.currentItem != null) {
     let index;
     for (let i = 0; i < itemArray.length; i++) {
@@ -272,13 +277,10 @@ function mouseClicked() {
     } else if (inventory.currentItem.name == "lettuce") {
       handleEating(index, 15);
     } else if (inventory.currentItem.name == "sword") {
-      for (let enemy of enemyArray) {
-        if (player.sprite.collide(enemy.sprite)) {
-          player.damageEnemy(enemy, inventory.currentItem);
-        }
-      }
+      player.attacking = true;
+    } else if (inventory.currentItem.name == "bow") {
+      player.attacking = true;
     }
-  } else {
   }
 }
 
