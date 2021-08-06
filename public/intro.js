@@ -3,11 +3,14 @@ function Intro() {
     let instructWidth, instructHeight;
     let xPos;
 
+    this.enter = function() {
+        camera.position.x = 0;
+        camera.position.y = height / 2 + 200;
+    }
+
     this.setup = function() {
         instructWidth = 500;
         instructHeight = 350;
-
-        xPos = -465;
 
         layersArray = [];
         backgroundLayer1 = new Background(l1, l1, 0.5);
@@ -33,6 +36,8 @@ function Intro() {
         layersArray.push(backgroundLayer7);
         layersArray.push(backgroundLayer8);
         layersArray.push(backgroundLayer9);
+        
+        xPos = -465;
     }
 
     this.draw = function() {
@@ -105,13 +110,13 @@ function Intro() {
     }
 
     function moveBackgrounds() {
-        // set the current xPosition, so we don't see tear
-        drawBackgrounds();
-
         // using the Background class to move each layer smoothly
         layersArray.forEach((layer) => {
           layer.moveSelf(true, xPos); //moveSelf(directionBoolean, currentXposition)
         });
+
+        // set the current xPosition, so we don't see tear
+        drawBackgrounds();
     }
 
     function drawBackgrounds() {
