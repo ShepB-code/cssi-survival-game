@@ -49,6 +49,10 @@ class Crafting {
     );
 
     this.displayItemSprite.addAnimation(
+      "addSlot",
+      "../assets/crafting/addSlot.png"
+    );
+    this.displayItemSprite.addAnimation(
       "bow",
       "../assets/crafting/bowCrafting.png"
     );
@@ -66,10 +70,7 @@ class Crafting {
       this.displayItemSprite.changeAnimation(this.currentRecipe["name"]);
       drawSprite(this.displayItemSprite);
     } else {
-      push();
-      fill("red");
-      rect(this.sprite.position.x - 15, this.sprite.position.y - 15, 30, 30);
-      pop();
+      drawSprite(this.displayItemSprite);
     }
   }
   cycleRecipes(key) {
