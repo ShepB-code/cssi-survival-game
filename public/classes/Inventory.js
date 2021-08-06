@@ -1,6 +1,6 @@
 class Inventory {
   constructor(x, y) {
-    this.squareSize = 30;
+    this.squareSize = 40;
     this.items = {};
     for (let i = 1; i < 10; i++) {
       this.items[i] = new InventorySquare(
@@ -33,10 +33,9 @@ class Inventory {
   }
   removeItem() {
     if (this.currentItemSquare != null) {
-    
       this.currentItemSquare.removeItem();
       this.currentItem = null;
-
+      this.currentItemSquare.color = "white";
     }
   }
 

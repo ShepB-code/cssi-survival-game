@@ -7,7 +7,6 @@ class Item {
 
   showSelf() {
     drawSprite(this.sprite);
-    this.sprite.debug = mouseIsPressed;
   }
 
   handleMovement() {
