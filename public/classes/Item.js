@@ -22,7 +22,7 @@ class Item {
   }
 }
 class Rock extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "rock");
     this.radius = 5;
     this.sprite.shapeColor = color(40);
@@ -38,7 +38,7 @@ class Rock extends Item {
   }
 }
 class Thread extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "thread");
     this.width = 10;
     this.height = 10;
@@ -57,7 +57,7 @@ class Thread extends Item {
 }
 
 class Wood extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "wood");
     this.width = 10;
     this.height = 10;
@@ -75,7 +75,7 @@ class Wood extends Item {
   }
 }
 class Beef extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "beef");
     this.radius = 5;
     this.sprite.shapeColor = color(351, 89, 71);
@@ -94,7 +94,7 @@ class Beef extends Item {
 }
 
 class Lettuce extends Item {
-  constructor(x, y) {
+  constructor(x) {
     super(x, "lettuce");
     this.radius = 5;
     this.sprite.shapeColor = color(115, 100, 100);
