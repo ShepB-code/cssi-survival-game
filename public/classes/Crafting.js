@@ -1,5 +1,4 @@
 class Crafting {
-  
   constructor() {
     this.sprite = createSprite(width / 2, height, 150, 150);
     this.leftArrowSprite = createSprite(this.sprite.position.x, height, 20, 20);
@@ -33,9 +32,18 @@ class Crafting {
     this.index = 0;
     this.currentRecipe;
 
-    this.sprite.addAnimation("craftingMenu", "../assets/crafting/craftingMenu.png");
-    this.leftArrowSprite.addAnimation("leftArrow", "../assets/crafting/leftCraftArrow.png");
-    this.rightArrowSprite.addAnimation("rightArrow", "../assets/crafting/rightCraftArrow.png");
+    this.sprite.addAnimation(
+      "craftingMenu",
+      "../assets/crafting/craftingMenu.png"
+    );
+    this.leftArrowSprite.addAnimation(
+      "leftArrow",
+      "../assets/crafting/leftCraftArrow.png"
+    );
+    this.rightArrowSprite.addAnimation(
+      "rightArrow",
+      "../assets/crafting/rightCraftArrow.png"
+    );
   }
 
   showSelf() {
@@ -49,7 +57,6 @@ class Crafting {
   cycleRecipes(key) {
     if (key == "beginning") {
       this.index = 0;
-      this.currentRecipe = this.validRecipes[this.index];
     }
     if (key == "ArrowRight") {
       if (this.index < this.validRecipes.length - 1) {
@@ -72,48 +79,68 @@ class Crafting {
     } else {
       this.leftArrowSprite.visible = true;
     }
-
-    console.log(this.index);
-    console.log(this.currentRecipe);
-    console.log(this.validRecipes);
   }
   purchaseItem(inventory, allItems) {
-    //remove items from the inventory
-    for (const key in inventory.items) {
+    if (this.validRecipes.length < 1) {
+      return;
+    }
+
+    if (this.isValidPurchase()) {
+      console.log(this.inventoryStats);
+      //remove items from the inventory
       for (const itemType in this.currentRecipe["ingredients"]) {
-        if (
-          inventory.items[key].item != null &&
-          itemType == inventory.items[key].item.name
-        ) {
-          if (this.currentRecipe["ingredients"][itemType] > 0) {
-            for (let i = 0; i < allItems.length; i++) {
-              if (allItems[i] == inventory.items[key].item) {
-                allItems.splice(i, 1);
-                break;
+        //check if there is enough resources to buy the item
+        for (let i = 0; i < this.currentRecipe["ingredients"][itemType]; i++) {
+          //use the items
+          for (const key in inventory.items) {
+            //find an item in the inventory that matches our needs
+            if (
+              inventory.items[key].item != null &&
+              itemType == inventory.items[key].item.name
+            ) {
+              //if we found the item then we remove it from the items array
+              for (let j = 0; j < allItems.length; j++) {
+                if (allItems[j] == inventory.items[key].item) {
+                  allItems.splice(j, 1);
+                  break;
+                }
               }
+              //lastly we remove it from the inventory;
+              inventory.items[key].item = null;
+              break;
             }
-            this.currentRecipe["ingredients"][itemType]--;
-            inventory.items[key].item = null;
           }
         }
       }
+
+      if (this.currentRecipe["name"] == "sword") {
+        inventory.addItem(new Sword(width / 2));
+      } else if (this.currentRecipe["name"] == "bow") {
+        inventory.addItem(new Bow(width / 2));
+      }
     }
-    if (this.currentRecipe["name"] == "sword") {
-      inventory.addItem(new Sword(width / 2));
-    } else if (this.currentRecipe["name"] == "bow") {
-      inventory.addItem(new Bow(width / 2));
+    //this.cycleRecipes("beginning");
+    //this.showSelf();
+  }
+  isValidPurchase() {
+    for (const key in this.currentRecipe["ingredients"]) {
+      if (this.inventoryStats[key] < this.currentRecipe["ingredients"][key]) {
+        return false;
+      }
     }
+    return true;
   }
   getValidRecipes() {
+    this.validRecipes = []; //resetting
     for (const key in this.recipes) {
       let recipe = this.recipes[key];
       let valid = false;
-
       for (const itemType in recipe["ingredients"]) {
         if (this.inventoryStats[itemType] >= recipe["ingredients"][itemType]) {
           valid = true;
         } else {
           valid = false;
+          break;
         }
       }
       if (valid && this.recipeNotInValidRecipes(recipe)) {
@@ -137,8 +164,10 @@ class Crafting {
   }
 
   updateInventoryStats(inventory) {
-    this.inventoryStats = {}; //resetting it
-
+    this.inventoryStats = {
+      wood: 0,
+      thread: 0,
+    };
     for (const key in inventory.items) {
       if (inventory.items[key].item != null) {
         let name = inventory.items[key].item.name;
@@ -149,6 +178,6 @@ class Crafting {
         }
       }
     }
+    //console.log(this.inventoryStats);
   }
 }
-

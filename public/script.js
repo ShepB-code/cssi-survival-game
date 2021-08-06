@@ -127,10 +127,6 @@ function draw() {
   crafting.updatePosition(player.sprite.position.x);
   inventory.updatePosition(currentCanvasX);
 
-  //update crafting inventory stats
-  crafting.updateInventoryStats(inventory);
-
-  crafting.getValidRecipes();
   camera.off();
 
   //update crafting inventory stats
@@ -186,8 +182,8 @@ function drawEnemies() {
       enemy.sprite.position.x > currentCanvasX &&
       enemy.sprite.position.x < currentCanvasX + width
     ) {
-      enemy.showSelf();
-      enemy.handleMovement(player);
+      // enemy.showSelf();
+      // enemy.handleMovement(player);
     }
   });
 }
