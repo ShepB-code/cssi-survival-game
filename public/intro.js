@@ -55,6 +55,7 @@ function Intro() {
     }
 
     function displayHelp() {
+        textAlign(CENTER);
         textSize(10);
         fill("black");
         text("1) Press A and D to move left and right", camera.position.x, camera.position.y - 150);

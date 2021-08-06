@@ -6,12 +6,13 @@ function GameOver() {
 
     this.draw = function() {
         background("black");
-        textAlign(CENTER);
+        
 
         displayDeath();
     }
 
     function displayDeath() {
+        textAlign(CENTER);
         fill("white");
         textSize(36);
         text("YOU DIED", camera.position.x , camera.position.y);
